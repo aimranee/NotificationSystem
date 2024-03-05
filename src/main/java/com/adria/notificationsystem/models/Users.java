@@ -1,4 +1,4 @@
-package com.adria.notificationsystem.entities;
+package com.adria.notificationsystem.models;
 
 import lombok.*;
 
@@ -9,15 +9,10 @@ import javax.persistence.Id;
 
 @Entity
 @Data
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-public class User {
+public class Users {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
     private String firstName;
     private String lastName;
     private String serial;

@@ -1,4 +1,4 @@
-package com.adria.notificationsystem.entities;
+package com.adria.notificationsystem.models;
 
 import lombok.*;
 

@@ -1,4 +1,4 @@
-package com.adria.notificationsystem.entities;
+package com.adria.notificationsystem.models;
 
 import lombok.*;
 
@@ -6,10 +6,8 @@ import javax.persistence.*;
 
 @Entity
 @Data
-@Getter
-@Setter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,7 +15,6 @@ public class Event {
 
     @Enumerated(EnumType.STRING)
     private EventType type;
-
     private boolean editable;
 
 }

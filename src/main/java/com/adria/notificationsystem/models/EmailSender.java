@@ -1,4 +1,4 @@
-package com.adria.notificationsystem.entities;
+package com.adria.notificationsystem.models;
 
 import lombok.*;
 
@@ -9,18 +9,12 @@ import javax.persistence.Id;
 
 @Entity
 @Data
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-public class Recipient {
+public class EmailSender {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    private String smtpHost;
+    private int smtpPort;
 
-    private String firstName;
-    private String lastName;
-    private String email;
-    private String phone;
-    private String token;
 }
