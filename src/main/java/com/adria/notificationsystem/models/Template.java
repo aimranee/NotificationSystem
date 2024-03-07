@@ -13,11 +13,8 @@ import javax.persistence.Id;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Template {
+public class Template extends AbstractEntity{
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
     private String subject;
     private String body;
 //    private enum ;

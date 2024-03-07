@@ -9,10 +9,10 @@ import javax.persistence.Id;
 
 @Entity
 @Data
-public class Users {
+@AllArgsConstructor
+@NoArgsConstructor
+public class Users extends AbstractEntity{
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
     private String firstName;
     private String lastName;
     private String serial;

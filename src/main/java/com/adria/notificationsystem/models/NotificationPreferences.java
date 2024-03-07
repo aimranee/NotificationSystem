@@ -9,11 +9,8 @@ import javax.persistence.Id;
 
 @Entity
 @Data
-public class NotificationPreferences {
+public class NotificationPreferences extends AbstractEntity{
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
 
 
 }

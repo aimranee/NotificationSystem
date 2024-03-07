@@ -4,7 +4,6 @@ import com.adria.notificationsystem.models.NotificationSys;
 import com.adria.notificationsystem.models.Recipient;
 import com.adria.notificationsystem.repository.RecipientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
@@ -18,7 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Component
-public class MailSenderUtils {
+public class EmailSenderUtils {
 
     private final JavaMailSender javaMailSender;
 
@@ -26,15 +25,15 @@ public class MailSenderUtils {
     private RecipientRepository recipientRepository;
     private final SpringTemplateEngine templateEngine;
 
-    public MailSenderUtils(JavaMailSender javaMailSender, SpringTemplateEngine templateEngine) {
+    public EmailSenderUtils(JavaMailSender javaMailSender, SpringTemplateEngine templateEngine) {
         this.javaMailSender = javaMailSender;
         this.templateEngine = templateEngine;
     }
 
-    public String mailSending(NotificationSys notification, String sender) {
+    public String emailSending(NotificationSys notification, String sender) {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper mimeMessageHelper;
-        Recipient recipient = recipientRepository.findById(notification.getId());
+        Recipient recipient = recipientRepository.findByUuid(notification.getRecipient().getUuid());
 
         try {
             mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
@@ -50,7 +49,7 @@ public class MailSenderUtils {
 
             javaMailSender.send(mimeMessage);
 
-            return "Mail Sent Successfully";
+            return "Email Sent Successfully";
         } catch (MessagingException e ) {
             throw new RuntimeException("Error while sending email!!", e);
         }

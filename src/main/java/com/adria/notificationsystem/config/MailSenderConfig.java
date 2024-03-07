@@ -1,6 +1,6 @@
 package com.adria.notificationsystem.config;
 
-import com.adria.notificationsystem.MailProperties;
+import com.adria.notificationsystem.EmailProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -11,9 +11,9 @@ import java.util.Properties;
 @Configuration
 public class MailSenderConfig {
 
-    private final MailProperties mailProperties;
+    private final EmailProperties mailProperties;
 
-    public MailSenderConfig(MailProperties mailProperties) {
+    public MailSenderConfig(EmailProperties mailProperties) {
         this.mailProperties = mailProperties;
     }
     @Bean

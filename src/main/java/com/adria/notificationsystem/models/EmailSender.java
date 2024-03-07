@@ -9,11 +9,9 @@ import javax.persistence.Id;
 
 @Entity
 @Data
-public class EmailSender {
+public class EmailSender extends AbstractEntity{
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+
     private String smtpHost;
     private int smtpPort;
 

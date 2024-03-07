@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.concurrent.CompletableFuture;
 
-public interface MailServiceDao {
+public interface EmailServiceDao {
     CompletableFuture<ResponseEntity<EmailResponse>> sendAsyncEmail(NotificationSys notfication);
 
     ResponseEntity<String> sendSyncEmail(NotificationSys notfication);

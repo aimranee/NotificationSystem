@@ -13,14 +13,12 @@ import javax.persistence.Id;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Recipient {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+public class Recipient extends AbstractEntity{
 
     private String firstName;
     private String lastName;
     private String email;
     private String phone;
     private String token;
+
 }
