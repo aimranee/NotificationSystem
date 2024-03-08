@@ -2,7 +2,7 @@ package com.adria.notificationsystem.controller;
 
 import com.adria.notificationsystem.models.NotificationSys;
 import com.adria.notificationsystem.responce.EmailResponse;
-import com.adria.notificationsystem.service.MailServiceDao;
+import com.adria.notificationsystem.service.EmailServiceDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,22 +15,22 @@ import java.util.concurrent.CompletableFuture;
 
 @RestController
 @RequestMapping("/notification")
-public class MailController {
-    private final MailServiceDao mailServiceDao;
+public class EmailController {
+    private final EmailServiceDao emailServiceDao;
 
     @Autowired
-    public MailController(MailServiceDao mailServiceDao) {
-        this.mailServiceDao = mailServiceDao;
+    public EmailController(EmailServiceDao emailServiceDao) {
+        this.emailServiceDao = emailServiceDao;
     }
 
-    @PostMapping("/send-async-mail")
+    @PostMapping("/send-async-email")
     public CompletableFuture<ResponseEntity<EmailResponse>> sendEmail(@Valid @RequestBody NotificationSys notification) {
-        return mailServiceDao.sendAsyncEmail(notification);
+        return emailServiceDao.sendAsyncEmail(notification);
     }
 
-    @PostMapping("/send-sync-mail")
+    @PostMapping("/send-sync-email")
     public ResponseEntity<String> sendSyncEmail(@Valid @RequestBody NotificationSys notification) {
-        return mailServiceDao.sendSyncEmail(notification);
+        return emailServiceDao.sendSyncEmail(notification);
     }
 
 }

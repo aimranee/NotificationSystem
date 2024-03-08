@@ -14,12 +14,11 @@ import javax.persistence.Id;
 @Getter
 @RequiredArgsConstructor
 @Setter
-public class SMSInfo {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+public class SMSInfo extends AbstractEntity{
 
     @JsonProperty("sms_status")
     private String smsStatus;
+
     @JsonProperty("status_message")
     private String statusMessage;
 

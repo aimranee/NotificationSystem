@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import javax.persistence.*;
 import java.util.ArrayList;
 
-@Entity
 @RequiredArgsConstructor
 @Getter
 public class SMSResponse {

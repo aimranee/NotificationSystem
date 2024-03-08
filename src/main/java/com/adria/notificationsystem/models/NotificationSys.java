@@ -9,19 +9,16 @@ import javax.persistence.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class NotificationSys {
-
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+public class NotificationSys extends AbstractEntity{
 
     @ManyToOne
     private Event event;
 
-    @NotNull
     @ManyToOne
     private Recipient recipient;
 
     private String msgBody;
     private String subject;
+    private String result;
 
 }

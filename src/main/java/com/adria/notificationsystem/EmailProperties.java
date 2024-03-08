@@ -12,7 +12,7 @@ import org.springframework.context.annotation.PropertySource;
 @Configuration
 @PropertySource("classpath:mail.properties")
 @ConfigurationProperties(prefix = "mail")
-public class MailProperties {
+public class EmailProperties {
 
     @Value("${mail.host}")
     private String host;

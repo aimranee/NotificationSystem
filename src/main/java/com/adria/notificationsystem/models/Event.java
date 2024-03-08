@@ -8,12 +8,9 @@ import javax.persistence.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Event {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+public class Event extends AbstractEntity {
 
-    @Enumerated(EnumType.STRING)
+    @ManyToOne
     private EventType type;
     private boolean editable;
 
