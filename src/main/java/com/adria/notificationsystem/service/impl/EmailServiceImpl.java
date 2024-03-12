@@ -1,10 +1,16 @@
 package com.adria.notificationsystem.service.impl;
 
-import com.adria.notificationsystem.models.NotificationSys;
-import com.adria.notificationsystem.responce.EmailResponse;
-import com.adria.notificationsystem.service.EmailServiceDao;
+import com.adria.notificationsystem.dto.request.EmailRequestDto;
+import com.adria.notificationsystem.dto.response.EmailResponseDto;
+import com.adria.notificationsystem.mapper.EmailMapper;
+import com.adria.notificationsystem.models.Email;
+import com.adria.notificationsystem.models.Event;
+import com.adria.notificationsystem.models.Recipient;
+import com.adria.notificationsystem.repository.EventRepository;
+import com.adria.notificationsystem.repository.RecipientRepository;
+import com.adria.notificationsystem.service.EmailService;
 import com.adria.notificationsystem.utils.EmailSenderUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,37 +20,42 @@ import org.springframework.stereotype.Service;
 import java.util.concurrent.CompletableFuture;
 
 @Service
-public class EmailServiceImpl implements EmailServiceDao {
+@RequiredArgsConstructor
+public class EmailServiceImpl implements EmailService {
 
     private final EmailSenderUtils emailSenderUtils;
+
     @Value("${mail.username}")
     private String sender;
 
-    @Autowired
-    public EmailServiceImpl(EmailSenderUtils emailSenderUtils) {
-        this.emailSenderUtils = emailSenderUtils;
-    }
+    private final EventRepository eventRepository;
+
+    private final RecipientRepository recipientRepository;
+
+    private final EmailMapper emailMapper;
 
     @Override
-    public CompletableFuture<ResponseEntity<EmailResponse>> sendAsyncEmail(NotificationSys notfications) {
+    public CompletableFuture<ResponseEntity<EmailResponseDto>> sendEmail(EmailRequestDto requestDTO) {
         return CompletableFuture.supplyAsync(() -> {
-            EmailResponse emailResponse = new EmailResponse();
+            EmailResponseDto emailResponseDto = new EmailResponseDto();
             try {
-                emailSenderUtils.emailSending(notfications,sender);
-                emailResponse.setResult("done");
+                Email email = emailMapper.toEntity(requestDTO);
+                Event event = eventRepository.findByEventType(requestDTO.getEventType());
+                Recipient recipient = recipientRepository.findByEmail(requestDTO.getEmail());
+                if (recipient == null)
+                    recipient = recipientRepository.save(new Recipient(requestDTO.getFirstName(), requestDTO.getLastName(), requestDTO.getEmail(), null, null));
 
-                return ResponseEntity.ok(emailResponse);
+                email.setEvent(event);
+                email.setRecipient(recipient);
+                emailSenderUtils.emailSending(email, sender);
+                emailResponseDto.setResult("done");
+                return ResponseEntity.ok(emailResponseDto);
             } catch (MailException e) {
-                emailResponse.setResult("not done!");
-
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(emailResponse);
+                emailResponseDto.setResult("not done!");
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(emailResponseDto);
             }
 
         });
     }
 
-    @Override
-    public ResponseEntity<String> sendSyncEmail(NotificationSys notfication) {
-        return null;
-    }
 }

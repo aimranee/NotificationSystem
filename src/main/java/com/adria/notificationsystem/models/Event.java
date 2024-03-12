@@ -10,8 +10,9 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class Event extends AbstractEntity {
 
-    @ManyToOne
-    private EventType type;
+    private String eventType;
     private boolean editable;
+    private String message;
+    private String subject;
 
 }

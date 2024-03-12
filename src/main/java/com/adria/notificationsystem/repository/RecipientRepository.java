@@ -9,4 +9,5 @@ import java.util.UUID;
 @Repository
 public interface RecipientRepository extends JpaRepository<Recipient,Long> {
     Recipient findByUuid(UUID uuid);
+    Recipient findByEmail(String email);
 }

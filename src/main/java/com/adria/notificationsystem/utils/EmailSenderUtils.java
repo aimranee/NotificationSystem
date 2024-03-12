@@ -1,5 +1,6 @@
 package com.adria.notificationsystem.utils;
 
+import com.adria.notificationsystem.models.Email;
 import com.adria.notificationsystem.models.NotificationSys;
 import com.adria.notificationsystem.models.Recipient;
 import com.adria.notificationsystem.repository.RecipientRepository;
@@ -30,20 +31,19 @@ public class EmailSenderUtils {
         this.templateEngine = templateEngine;
     }
 
-    public String emailSending(NotificationSys notification, String sender) {
+    public String emailSending(Email email, String sender) {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper mimeMessageHelper;
-        Recipient recipient = recipientRepository.findByUuid(notification.getRecipient().getUuid());
 
         try {
             mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
 
             mimeMessageHelper.setFrom(sender);
-            mimeMessageHelper.setTo(recipient.getEmail());
-            mimeMessageHelper.setSubject(notification.getSubject());
+            mimeMessageHelper.setTo(email.getRecipient().getEmail());
+            mimeMessageHelper.setSubject(email.getEvent().getSubject());
 
             Context context = new Context();
-            context.setVariables(setVariablesOnEmailTemplate(notification));
+            context.setVariables(setVariablesOnEmailTemplate(email));
             String htmlContent = templateEngine.process("emailTemplate", context);
             mimeMessageHelper.setText(htmlContent, true);
 
@@ -55,12 +55,14 @@ public class EmailSenderUtils {
         }
     }
 
-    private Map<String, Object> setVariablesOnEmailTemplate(NotificationSys notificationSys) {
+    private Map<String, Object> setVariablesOnEmailTemplate(Email email) {
         Map<String, Object> templateVariables = new HashMap<>();
-        templateVariables.put("recipientName", notificationSys.getRecipient().toString());
+        templateVariables.put("recipientLastName", email.getRecipient().getLastName());
+        templateVariables.put("recipientFirstName", email.getRecipient().getFirstName());
         templateVariables.put("requestId", 100);
         templateVariables.put("requestDate", LocalDateTime.now());
-        templateVariables.put("senderName", "PSO Team, TechnoNext");
+        templateVariables.put("senderName", "Adria Business & Technology");
+        templateVariables.put("message", email.getEvent().getMessage());
         return templateVariables;
     }
 
