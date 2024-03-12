@@ -9,7 +9,8 @@ import java.util.UUID;
 @Component
 public class EmailRequestDto {
     private String eventType;
-    private String email;
+    private String emailRecipient;
     private String firstName;
     private String lastName;
+    private String message;
 }

@@ -10,6 +10,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class Event extends AbstractEntity {
 
+    @Column(unique = true)
     private String eventType;
     private boolean editable;
     private String message;

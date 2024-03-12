@@ -2,13 +2,16 @@ package com.adria.notificationsystem.service.impl;
 
 import com.adria.notificationsystem.dto.request.EmailRequestDto;
 import com.adria.notificationsystem.dto.response.EmailResponseDto;
+import com.adria.notificationsystem.dto.response.EventResponseDto;
 import com.adria.notificationsystem.mapper.EmailMapper;
+import com.adria.notificationsystem.mapper.EventMapper;
 import com.adria.notificationsystem.models.Email;
 import com.adria.notificationsystem.models.Event;
 import com.adria.notificationsystem.models.Recipient;
 import com.adria.notificationsystem.repository.EventRepository;
 import com.adria.notificationsystem.repository.RecipientRepository;
 import com.adria.notificationsystem.service.EmailService;
+import com.adria.notificationsystem.service.EventService;
 import com.adria.notificationsystem.utils.EmailSenderUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,11 +31,12 @@ public class EmailServiceImpl implements EmailService {
     @Value("${mail.username}")
     private String sender;
 
-    private final EventRepository eventRepository;
+    private final EventService eventService;
 
     private final RecipientRepository recipientRepository;
 
     private final EmailMapper emailMapper;
+    private final EventMapper eventMapper;
 
     @Override
     public CompletableFuture<ResponseEntity<EmailResponseDto>> sendEmail(EmailRequestDto requestDTO) {
@@ -40,11 +44,12 @@ public class EmailServiceImpl implements EmailService {
             EmailResponseDto emailResponseDto = new EmailResponseDto();
             try {
                 Email email = emailMapper.toEntity(requestDTO);
-                Event event = eventRepository.findByEventType(requestDTO.getEventType());
-                Recipient recipient = recipientRepository.findByEmail(requestDTO.getEmail());
+                Event event = eventService.findByEventType(requestDTO.getEventType());
+                Recipient recipient = recipientRepository.findByEmail(requestDTO.getEmailRecipient());
                 if (recipient == null)
-                    recipient = recipientRepository.save(new Recipient(requestDTO.getFirstName(), requestDTO.getLastName(), requestDTO.getEmail(), null, null));
-
+                    recipient = recipientRepository.save(new Recipient(requestDTO.getFirstName(), requestDTO.getLastName(), requestDTO.getEmailRecipient(), null, null));
+                if (requestDTO.getEventType() == "OTP")
+                    event.setMessage(requestDTO.getMessage());
                 email.setEvent(event);
                 email.setRecipient(recipient);
                 emailSenderUtils.emailSending(email, sender);
