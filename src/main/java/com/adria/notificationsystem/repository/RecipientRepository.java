@@ -10,4 +10,5 @@ import java.util.UUID;
 public interface RecipientRepository extends JpaRepository<Recipient,Long> {
     Recipient findByUuid(UUID uuid);
     Recipient findByEmail(String email);
+    boolean existsByEmail(String email);
 }

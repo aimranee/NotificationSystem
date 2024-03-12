@@ -10,5 +10,4 @@ public interface EventService {
     void delete (EventRequestDto event);
     Event findByEventType (String eventType);
 
-
 }
