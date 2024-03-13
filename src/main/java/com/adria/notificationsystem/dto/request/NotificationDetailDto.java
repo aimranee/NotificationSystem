@@ -5,10 +5,9 @@ import org.springframework.stereotype.Component;
 
 @Data
 @Component
-public class NotificationRequestDto {
-    private String eventType;
-    private String emailRecipient;
-    private String phoneRecipient;
+public class NotificationDetailDto {
+    private EventRequestDto eventDto;
+    private RecipientRequestDto recipientDto;
     private String message;
     private String notificationType;
 }

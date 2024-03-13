@@ -1,4 +1,4 @@
-package com.adria.notificationsystem.models;
+package com.adria.notificationsystem.model;
 
 import lombok.Getter;
 import lombok.Setter;

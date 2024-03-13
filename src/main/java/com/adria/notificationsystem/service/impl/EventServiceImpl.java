@@ -3,7 +3,7 @@ package com.adria.notificationsystem.service.impl;
 import com.adria.notificationsystem.dto.request.EventRequestDto;
 import com.adria.notificationsystem.dto.response.EventResponseDto;
 import com.adria.notificationsystem.mapper.EventMapper;
-import com.adria.notificationsystem.models.Event;
+import com.adria.notificationsystem.model.Event;
 import com.adria.notificationsystem.repository.EventRepository;
 import com.adria.notificationsystem.service.EventService;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +25,7 @@ public class EventServiceImpl implements EventService {
             throw new DataIntegrityViolationException("An event with the same eventType already exists.");
         }
         event = eventRepository.save(event);
-        return eventMapper.toDto(event);
+        return eventMapper.toRespenseDto(event);
     }
 
     @Override

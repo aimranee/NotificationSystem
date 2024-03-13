@@ -1,8 +1,10 @@
 package com.adria.notificationsystem.factories;
 
 import com.adria.notificationsystem.dto.request.NotificationRequestDto;
+import com.adria.notificationsystem.dto.response.NotificationResponseDto;
 import com.adria.notificationsystem.service.NotificationService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
@@ -22,8 +24,8 @@ public class NotificationFactory {
         return notificationService;
     }
 
-    public void pushNotification(NotificationRequestDto requestDto) {
-        NotificationService notificationService = getNotificationService(requestDto.getEventType());
-        notificationService.sendNotification(requestDto);
+    public ResponseEntity<NotificationResponseDto> pushNotification(NotificationRequestDto requestDto) {
+        NotificationService notificationService = getNotificationService(requestDto.getNotificationType());
+        return notificationService.sendNotification(requestDto);
     }
 }

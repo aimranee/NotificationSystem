@@ -1,11 +1,7 @@
 package com.adria.notificationsystem.service;
 
-import com.adria.notificationsystem.dto.request.EventRequestDto;
 import com.adria.notificationsystem.dto.request.RecipientRequestDto;
-import com.adria.notificationsystem.dto.response.EventResponseDto;
-import com.adria.notificationsystem.dto.response.RecipientResponseDto;
-import com.adria.notificationsystem.models.Event;
-import com.adria.notificationsystem.models.Recipient;
+import com.adria.notificationsystem.model.Recipient;
 
 public interface RecipientService {
 

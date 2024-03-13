@@ -1,12 +1,8 @@
 package com.adria.notificationsystem.service.impl;
 
 import com.adria.notificationsystem.dto.request.RecipientRequestDto;
-import com.adria.notificationsystem.dto.response.RecipientResponseDto;
-import com.adria.notificationsystem.mapper.EventMapper;
 import com.adria.notificationsystem.mapper.RecipientMapper;
-import com.adria.notificationsystem.models.Event;
-import com.adria.notificationsystem.models.Recipient;
-import com.adria.notificationsystem.repository.EventRepository;
+import com.adria.notificationsystem.model.Recipient;
 import com.adria.notificationsystem.repository.RecipientRepository;
 import com.adria.notificationsystem.service.RecipientService;
 import lombok.RequiredArgsConstructor;
@@ -41,6 +37,9 @@ public class RecipientServiceImpl implements RecipientService {
 
     @Override
     public Recipient findByEmail(String email) {
-        return null;
+        if (!recipientRepository.existsByEmail(email)) {
+            throw new DataIntegrityViolationException("doesn't exists.");
+        }
+        return recipientRepository.findByEmail(email);
     }
 }
