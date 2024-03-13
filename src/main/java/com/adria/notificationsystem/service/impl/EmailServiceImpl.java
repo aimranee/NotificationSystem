@@ -1,14 +1,11 @@
 package com.adria.notificationsystem.service.impl;
 
-import com.adria.notificationsystem.dto.request.EmailRequestDto;
 import com.adria.notificationsystem.dto.request.NotificationRequestDto;
-import com.adria.notificationsystem.dto.request.RecipientRequestDto;
 import com.adria.notificationsystem.dto.response.EmailResponseDto;
-import com.adria.notificationsystem.mapper.EmailMapper;
+import com.adria.notificationsystem.dto.response.NotificationResponseDto;
 import com.adria.notificationsystem.mapper.EventMapper;
 import com.adria.notificationsystem.mapper.NotificationMapper;
 import com.adria.notificationsystem.mapper.RecipientMapper;
-import com.adria.notificationsystem.models.Email;
 import com.adria.notificationsystem.models.Event;
 import com.adria.notificationsystem.models.NotificationSys;
 import com.adria.notificationsystem.models.Recipient;
@@ -16,6 +13,7 @@ import com.adria.notificationsystem.service.EventService;
 import com.adria.notificationsystem.service.NotificationService;
 import com.adria.notificationsystem.service.RecipientService;
 import com.adria.notificationsystem.utils.EmailSenderUtils;
+import com.adria.notificationsystem.utils.NotificationType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -41,8 +39,8 @@ public class EmailServiceImpl implements NotificationService {
     private final RecipientMapper recipientMapper;
 
     @Override
-    public ResponseEntity<EmailResponseDto> sendNotification(NotificationRequestDto requestDTO) {
-        EmailResponseDto emailResponseDto = new EmailResponseDto();
+    public ResponseEntity<NotificationResponseDto> sendNotification(NotificationRequestDto requestDTO) {
+        NotificationResponseDto notificationResponseDto = new NotificationResponseDto();
         try {
             NotificationSys notificationSys = notificationMapper.toEntity(requestDTO);
             Event event = eventService.findByEventType(requestDTO.getEventType());
@@ -54,11 +52,11 @@ public class EmailServiceImpl implements NotificationService {
             notificationSys.setEvent(event);
             notificationSys.setRecipient(recipient);
             emailSenderUtils.emailSending(notificationSys, sender);
-            emailResponseDto.setResult("done");
-            return ResponseEntity.ok(emailResponseDto);
+            notificationResponseDto.setResult("done");
+            return ResponseEntity.ok(notificationResponseDto);
         } catch (MailException e) {
-            emailResponseDto.setResult("not done!");
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(emailResponseDto);
+            notificationResponseDto.setResult("not done!");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(notificationResponseDto);
         }
     }
 }

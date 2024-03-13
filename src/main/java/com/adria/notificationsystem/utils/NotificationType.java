@@ -1,4 +1,4 @@
-package com.adria.notificationsystem.service.impl;
+package com.adria.notificationsystem.utils;
 
 public class NotificationType {
     public static final String EMAIL = "email";

@@ -1,10 +1,10 @@
 package com.adria.notificationsystem.service.impl;
 
-import com.adria.notificationsystem.dto.request.EmailRequestDto;
 import com.adria.notificationsystem.dto.request.NotificationRequestDto;
 import com.adria.notificationsystem.dto.request.OtpRequestDto;
 import com.adria.notificationsystem.service.NotificationService;
 import com.adria.notificationsystem.service.OtpService;
+import com.adria.notificationsystem.utils.NotificationType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
