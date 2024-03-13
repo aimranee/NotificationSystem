@@ -9,7 +9,7 @@ import lombok.*;
 public class NotificationSys {
 
     private Event event;
-
     private Recipient recipient;
+    private String notificationType;
 
 }

@@ -4,6 +4,7 @@ import com.adria.notificationsystem.models.Email;
 import com.adria.notificationsystem.models.NotificationSys;
 import com.adria.notificationsystem.models.Recipient;
 import com.adria.notificationsystem.repository.RecipientRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -18,20 +19,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Component
+@RequiredArgsConstructor
 public class EmailSenderUtils {
 
     private final JavaMailSender javaMailSender;
-
-    @Autowired
-    private RecipientRepository recipientRepository;
     private final SpringTemplateEngine templateEngine;
 
-    public EmailSenderUtils(JavaMailSender javaMailSender, SpringTemplateEngine templateEngine) {
-        this.javaMailSender = javaMailSender;
-        this.templateEngine = templateEngine;
-    }
-
-    public String emailSending(Email email, String sender) {
+    public String emailSending(NotificationSys notificationSys, String sender) {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper mimeMessageHelper;
 
@@ -39,11 +33,11 @@ public class EmailSenderUtils {
             mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
 
             mimeMessageHelper.setFrom(sender);
-            mimeMessageHelper.setTo(email.getRecipient().getEmail());
-            mimeMessageHelper.setSubject(email.getEvent().getSubject());
+            mimeMessageHelper.setTo(notificationSys.getRecipient().getEmail());
+            mimeMessageHelper.setSubject(notificationSys.getEvent().getSubject());
 
             Context context = new Context();
-            context.setVariables(setVariablesOnEmailTemplate(email));
+            context.setVariables(setVariablesOnEmailTemplate(notificationSys));
             String htmlContent = templateEngine.process("emailTemplate", context);
             mimeMessageHelper.setText(htmlContent, true);
 
@@ -55,15 +49,14 @@ public class EmailSenderUtils {
         }
     }
 
-    private Map<String, Object> setVariablesOnEmailTemplate(Email email) {
+    private Map<String, Object> setVariablesOnEmailTemplate(NotificationSys notificationSys) {
         Map<String, Object> templateVariables = new HashMap<>();
-        templateVariables.put("recipientLastName", email.getRecipient().getLastName());
-        templateVariables.put("recipientFirstName", email.getRecipient().getFirstName());
+        templateVariables.put("recipientLastName", notificationSys.getRecipient().getLastName());
+        templateVariables.put("recipientFirstName", notificationSys.getRecipient().getFirstName());
         templateVariables.put("requestId", 100);
         templateVariables.put("requestDate", LocalDateTime.now());
         templateVariables.put("senderName", "Adria Business & Technology");
-        templateVariables.put("message", email.getEvent().getMessage());
+        templateVariables.put("message", notificationSys.getEvent().getMessage());
         return templateVariables;
     }
-
 }

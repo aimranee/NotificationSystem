@@ -1,9 +1,9 @@
 package com.adria.notificationsystem.service.impl;
 
 import com.adria.notificationsystem.dto.request.EmailRequestDto;
+import com.adria.notificationsystem.dto.request.NotificationRequestDto;
 import com.adria.notificationsystem.dto.request.OtpRequestDto;
-import com.adria.notificationsystem.dto.response.EmailResponseDto;
-import com.adria.notificationsystem.service.EmailService;
+import com.adria.notificationsystem.service.NotificationService;
 import com.adria.notificationsystem.service.OtpService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -12,14 +12,13 @@ import org.springframework.stereotype.Service;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 @RequiredArgsConstructor
 public class OtpServiceImpl implements OtpService {
     private final Map<String, OtpRequestDto> otpCache = new ConcurrentHashMap<>();
-    private final EmailService emailService;
+    private final NotificationService notificationService;
 
     @Override
     public String generateRandomOtp(int length) {
@@ -46,16 +45,16 @@ public class OtpServiceImpl implements OtpService {
     }
 
     @Override
-    public CompletableFuture<ResponseEntity<EmailResponseDto>> sendOtp(String email, String otp) {
+    public ResponseEntity<NotificationRequestDto> sendOtp(String email, String otp) {
         otpCache.put(email, new OtpRequestDto(otp, System.currentTimeMillis()));
         String message = "Dear! \n Your OTP for <some thing> is " + otp
                 + "\n This otp will be invalid after 5 minutes.";
 
-        EmailRequestDto emailRequestDto = new EmailRequestDto();
-        emailRequestDto.setEmailRecipient(email);
-        emailRequestDto.setMessage(message);
-        emailRequestDto.setEventType("OTP");
+        NotificationRequestDto requestDto = new NotificationRequestDto();
+        requestDto.setEmailRecipient(email);
+        requestDto.setMessage(message);
+        requestDto.setEventType("OTP");
 
-        return emailService.sendEmail(emailRequestDto);
+        return notificationService.sendNotification(requestDto);
     }
 }

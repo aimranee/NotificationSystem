@@ -11,6 +11,6 @@ public interface OtpService {
 
     boolean validateOtp(String email, String otp);
 
-    CompletableFuture<ResponseEntity<EmailResponseDto>> sendOtp(String email, String otp);
+    ResponseEntity<?> sendOtp(String email, String otp);
 
 }
