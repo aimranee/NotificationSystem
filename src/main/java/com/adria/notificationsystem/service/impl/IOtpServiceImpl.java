@@ -17,7 +17,6 @@ import java.util.concurrent.ConcurrentHashMap;
 @RequiredArgsConstructor
 public class IOtpServiceImpl implements IOtpService {
     private final Map<String, OtpRequestDto> otpCache = new ConcurrentHashMap<>();
-    private final INotificationService notificationService;
 
     @Override
     public String generateRandomOtp(int length) {
@@ -27,7 +26,6 @@ public class IOtpServiceImpl implements IOtpService {
         for (int i = 0; i < length; i++) {
             otp[i] = numbers.charAt(randomObject.nextInt(10)); // cast to character
         }
-
         return new String(otp);
     }
 
@@ -44,16 +42,16 @@ public class IOtpServiceImpl implements IOtpService {
     }
 
     @Override
-    public ResponseEntity<NotificationRequestDto> sendOtp(String email, String otp) {
+    public String getOtpMessage(String email, String otp) {
         otpCache.put(email, new OtpRequestDto(otp, System.currentTimeMillis()));
         String message = "Dear! \n Your OTP for <some thing> is " + otp
                 + "\n This otp will be invalid after 5 minutes.";
 
-        NotificationRequestDto requestDto = new NotificationRequestDto();
-        requestDto.setEmailRecipient(email);
-        requestDto.setMessage(message);
-        requestDto.setEventType("OTP");
+//        NotificationRequestDto requestDto = new NotificationRequestDto();
+//        requestDto.setEmailRecipient(email);
+//        requestDto.setMessage(message);
+//        requestDto.setEventType("OTP");
 
-        return notificationService.sendNotification(requestDto);
+        return message;
     }
 }

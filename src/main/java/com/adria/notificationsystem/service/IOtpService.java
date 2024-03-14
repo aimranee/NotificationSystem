@@ -8,6 +8,6 @@ public interface IOtpService {
 
     boolean validateOtp(String email, String otp);
 
-    ResponseEntity<?> sendOtp(String email, String otp);
+    String getOtpMessage(String email, String otp);
 
 }

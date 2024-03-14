@@ -12,6 +12,7 @@ import com.adria.notificationsystem.model.entities.Event;
 import com.adria.notificationsystem.model.entities.Recipient;
 import com.adria.notificationsystem.service.INotificationService;
 import com.adria.notificationsystem.dao.IRecipientService;
+import com.adria.notificationsystem.service.IOtpService;
 import com.adria.notificationsystem.utils.EmailSenderUtils;
 import com.adria.notificationsystem.utils.FileUtils;
 import com.adria.notificationsystem.utils.NotificationType;
@@ -37,20 +38,27 @@ public class EmailServiceImpl implements INotificationService<NotificationRespon
     private final EventMapper eventMapper;
     private final RecipientMapper recipientMapper;
     private final EmailSenderUtils emailSenderUtils;
+    private final IOtpService otpService;
 
     @Override
-    public ResponseEntity<NotificationResponseDto> sendNotification(NotificationRequestDto requestDTO) {
+    public ResponseEntity<NotificationResponseDto> sendNotification(NotificationRequestDto requestDto) {
         NotificationResponseDto notificationResponseDto = new NotificationResponseDto();
         NotificationDetailDto notificationDetailDto = new NotificationDetailDto();
         try {
-            EventRequestDto eventDto = eventMapper.toDto(eventService.findByEventType(requestDTO.getEventType()));
-            RecipientRequestDto recipientDto = recipientMapper.toDto(recipientService.findByEmail(requestDTO.getEmailRecipient()));
+            EventRequestDto eventDto = eventMapper.toDto(eventService.findByEventType(requestDto.getEventType()));
+            RecipientRequestDto recipientDto = recipientMapper.toDto(recipientService.findByEmail(requestDto.getEmailRecipient()));
 //            if (recipient == null)
 //                recipient = recipientService.save(new RecipientRequestDto(requestDTO.getFirstName(), requestDTO.getLastName(), requestDTO.getEmailRecipient(), null, null));
+
+            if ("OTP".equals(requestDto.getEventType())){
+                String otp = otpService.generateRandomOtp(6);
+                String message = otpService.getOtpMessage(recipientDto.getEmail(), otp);
+                notificationDetailDto.setMessage(message);
+            }
+            System.err.println("====================>>>>> " + notificationDetailDto.getMessage());
+
             notificationDetailDto.setRecipientDto(recipientDto);
             notificationDetailDto.setEventDto(eventDto);
-            if (requestDTO.getEventType() == "OTP")
-                notificationDetailDto.setMessage(requestDTO.getMessage());
             emailSenderUtils.emailSending(notificationDetailDto, sender);
             notificationResponseDto.setResult("done");
             return ResponseEntity.ok(notificationResponseDto);
@@ -72,6 +80,21 @@ public class EmailServiceImpl implements INotificationService<NotificationRespon
             Recipient recipient = recipientService.findByEmail(requestDto.getEmailRecipient());
             notificationDetailDto.setEventDto(eventMapper.toDto(event));
             notificationDetailDto.setRecipientDto(recipientMapper.toDto(recipient));
+
+            if (requestDto.getEventType()=="OTP"){
+                System.err.println("====================>>>>> " + requestDto.getEmailRecipient());
+
+                String otp = otpService.generateRandomOtp(6);
+                System.err.println("====================>>>>> " + otp);
+
+                String message = otpService.getOtpMessage(recipient.getEmail(), otp);
+                System.err.println("====================>>>>> " + message);
+
+                notificationDetailDto.setMessage(message);
+            }else{
+                notificationDetailDto.setMessage(event.getMessage());
+            }
+            System.err.println(notificationDetailDto.getMessage());
             String result = emailSenderUtils.mailSendingWithAttachment(notificationDetailDto, sender, files);
             notificationResponseDto.setResult(result);
             return ResponseEntity.ok(notificationResponseDto);

@@ -85,7 +85,7 @@ public class EmailSenderUtils {
         templateVariables.put("requestId", 100);
         templateVariables.put("requestDate", LocalDateTime.now());
         templateVariables.put("senderName", "Adria Business & Technology");
-        templateVariables.put("message", notificationDto.getEventDto().getMessage());
+        templateVariables.put("message", notificationDto.getMessage());
         return templateVariables;
     }
 

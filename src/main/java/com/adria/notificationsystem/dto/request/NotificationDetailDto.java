@@ -1,6 +1,7 @@
 package com.adria.notificationsystem.dto.request;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import javax.validation.Valid;
@@ -8,6 +9,7 @@ import javax.validation.constraints.NotBlank;
 
 @Data
 @Component
+@NoArgsConstructor
 public class NotificationDetailDto {
     @Valid
     private EventRequestDto eventDto;
