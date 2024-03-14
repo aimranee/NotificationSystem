@@ -3,7 +3,7 @@ package com.adria.notificationsystem.dao;
 import com.adria.notificationsystem.dto.request.RecipientRequestDto;
 import com.adria.notificationsystem.model.entities.Recipient;
 
-public interface RecipientService {
+public interface IRecipientService {
 
     Recipient save (RecipientRequestDto eventRequestDto);
     Recipient update (RecipientRequestDto recipient);

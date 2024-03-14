@@ -1,18 +1,18 @@
-package com.adria.notificationsystem.service.impl;
+package com.adria.notificationsystem.dao.impl;
 
 import com.adria.notificationsystem.dto.request.EventRequestDto;
 import com.adria.notificationsystem.dto.response.EventResponseDto;
 import com.adria.notificationsystem.mapper.EventMapper;
-import com.adria.notificationsystem.model.Event;
+import com.adria.notificationsystem.model.entities.Event;
 import com.adria.notificationsystem.repository.EventRepository;
-import com.adria.notificationsystem.service.EventService;
+import com.adria.notificationsystem.dao.IEventService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class EventServiceImpl implements EventService {
+public class EventServiceImpl implements IEventService {
 
     private final EventRepository eventRepository;
     private final EventMapper eventMapper;

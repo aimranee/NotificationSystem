@@ -6,12 +6,14 @@ import com.adria.notificationsystem.dto.request.NotificationRequestDto;
 import com.adria.notificationsystem.dto.request.RecipientRequestDto;
 import com.adria.notificationsystem.dto.response.NotificationResponseDto;
 import com.adria.notificationsystem.mapper.EventMapper;
-import com.adria.notificationsystem.mapper.NotificationMapper;
 import com.adria.notificationsystem.mapper.RecipientMapper;
-import com.adria.notificationsystem.service.EventService;
-import com.adria.notificationsystem.service.NotificationService;
-import com.adria.notificationsystem.service.RecipientService;
+import com.adria.notificationsystem.dao.IEventService;
+import com.adria.notificationsystem.model.entities.Event;
+import com.adria.notificationsystem.model.entities.Recipient;
+import com.adria.notificationsystem.service.INotificationService;
+import com.adria.notificationsystem.dao.IRecipientService;
 import com.adria.notificationsystem.utils.EmailSenderUtils;
+import com.adria.notificationsystem.utils.FileUtils;
 import com.adria.notificationsystem.utils.NotificationType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,23 +21,22 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @Service(NotificationType.EMAIL)
 @RequiredArgsConstructor
-public class EmailServiceImpl implements NotificationService {
-
-    private final EmailSenderUtils emailSenderUtils;
+public class EmailServiceImpl implements INotificationService<NotificationResponseDto> {
 
     @Value("${mail.username}")
     private String sender;
 
-    private final EventService eventService;
-
-    private final RecipientService recipientService;
-
-    private final NotificationMapper notificationMapper;
+    private final IEventService eventService;
+    private final IRecipientService recipientService;
     private final EventMapper eventMapper;
     private final RecipientMapper recipientMapper;
+    private final EmailSenderUtils emailSenderUtils;
 
     @Override
     public ResponseEntity<NotificationResponseDto> sendNotification(NotificationRequestDto requestDTO) {
@@ -59,20 +60,24 @@ public class EmailServiceImpl implements NotificationService {
         }
     }
 
-//    @Override
-//    public ResponseEntity<NotificationResponseDto> sendNotificationWithFiles(MultipartFile file, NotificationRequestDto requestDto) {
-//        NotificationResponseDto notificationResponseDto = new NotificationResponseDto();
-//        try {
-//            FileUtil.isValid(file);
-//            NotificationSys notificationSys = notificationMapper.toEntity(requestDto);
-//            Event event = eventService.findByEventType(requestDto.getEventType());
-//            Recipient recipient = recipientService.findByEmail(requestDto.getEmailRecipient());
-//            String result = emailSenderUtils.mailSendingWithAttachment(requestDto, sender, file);
-//            return ResponseEntity.ok(responseDto);
-//        } catch (MailException e) {
-//            responseDto.setResult("not done!");
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseDto);
-//        }
-//
-//    }
+    @Override
+    public ResponseEntity<NotificationResponseDto> sendNotificationWithFiles(List<MultipartFile> files, NotificationRequestDto requestDto) {
+        NotificationResponseDto notificationResponseDto = new NotificationResponseDto();
+        NotificationDetailDto notificationDetailDto = new NotificationDetailDto();
+        try {
+            for (MultipartFile file : files)
+                FileUtils.isValid(file);
+
+            Event event = eventService.findByEventType(requestDto.getEventType());
+            Recipient recipient = recipientService.findByEmail(requestDto.getEmailRecipient());
+            notificationDetailDto.setEventDto(eventMapper.toDto(event));
+            notificationDetailDto.setRecipientDto(recipientMapper.toDto(recipient));
+            String result = emailSenderUtils.mailSendingWithAttachment(notificationDetailDto, sender, files);
+            notificationResponseDto.setResult(result);
+            return ResponseEntity.ok(notificationResponseDto);
+        } catch (MailException e) {
+            notificationResponseDto.setResult("not done!");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(notificationResponseDto);
+        }
+    }
 }

@@ -4,14 +4,14 @@ import com.adria.notificationsystem.dto.request.RecipientRequestDto;
 import com.adria.notificationsystem.mapper.RecipientMapper;
 import com.adria.notificationsystem.model.entities.Recipient;
 import com.adria.notificationsystem.repository.RecipientRepository;
-import com.adria.notificationsystem.dao.RecipientService;
+import com.adria.notificationsystem.dao.IRecipientService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class RecipientServiceImpl implements RecipientService {
+public class IRecipientServiceImpl implements IRecipientService {
 
     private final RecipientRepository recipientRepository;
     private final RecipientMapper recipientMapper;

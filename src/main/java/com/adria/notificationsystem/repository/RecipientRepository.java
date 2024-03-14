@@ -1,6 +1,6 @@
 package com.adria.notificationsystem.repository;
 
-import com.adria.notificationsystem.model.Recipient;
+import com.adria.notificationsystem.model.entities.Recipient;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

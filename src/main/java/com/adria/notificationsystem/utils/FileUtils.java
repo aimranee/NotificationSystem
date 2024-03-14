@@ -1,6 +1,7 @@
 package com.adria.notificationsystem.utils;
 
 import com.adria.notificationsystem.dto.request.FileExtensionDto;
+import com.adria.notificationsystem.exception.BadRequestException;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Objects;
@@ -32,15 +33,15 @@ public class FileUtils {
     public static void isValid(MultipartFile file) {
 
         if (file == null || file.isEmpty()) {
-            throw new RuntimeException ("File is empty or not provided.");
+            throw new BadRequestException("File is empty or not provided.");
         }
 
         String fileName = file.getOriginalFilename();
         if (Objects.isNull(fileName))
-            throw new RuntimeException ("file name is null");
+            throw new BadRequestException("file name is null");
         String fileExtension = FileUtils.getFileExtension(fileName);
         if (!FileExtensionDto.isValid(fileExtension)) {
-            throw new RuntimeException ("Error: file Extension is not valid!!");
+            throw new BadRequestException("Error: file Extension is not valid!!");
         }
     }
 }

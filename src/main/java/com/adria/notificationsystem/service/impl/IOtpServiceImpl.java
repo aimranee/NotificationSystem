@@ -2,9 +2,8 @@ package com.adria.notificationsystem.service.impl;
 
 import com.adria.notificationsystem.dto.request.NotificationRequestDto;
 import com.adria.notificationsystem.dto.request.OtpRequestDto;
-import com.adria.notificationsystem.service.NotificationService;
-import com.adria.notificationsystem.service.OtpService;
-import com.adria.notificationsystem.utils.NotificationType;
+import com.adria.notificationsystem.service.INotificationService;
+import com.adria.notificationsystem.service.IOtpService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -16,9 +15,9 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 @RequiredArgsConstructor
-public class OtpServiceImpl implements OtpService {
+public class IOtpServiceImpl implements IOtpService {
     private final Map<String, OtpRequestDto> otpCache = new ConcurrentHashMap<>();
-    private final NotificationService notificationService;
+    private final INotificationService notificationService;
 
     @Override
     public String generateRandomOtp(int length) {

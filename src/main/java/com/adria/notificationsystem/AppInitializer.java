@@ -1,13 +1,5 @@
 package com.adria.notificationsystem;
 
-import com.adria.notificationsystem.model.Event;
-import com.adria.notificationsystem.model.Recipient;
-import com.adria.notificationsystem.repository.EventRepository;
-import com.adria.notificationsystem.repository.RecipientRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.stereotype.Component;
-
 //@Component
 //public class AppInitializer implements CommandLineRunner {
 //
