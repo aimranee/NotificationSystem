@@ -1,8 +1,8 @@
-package com.adria.notificationsystem.service;
+package com.adria.notificationsystem.dao;
 
 import com.adria.notificationsystem.dto.request.EventRequestDto;
 import com.adria.notificationsystem.dto.response.EventResponseDto;
-import com.adria.notificationsystem.model.Event;
+import com.adria.notificationsystem.model.entities.Event;
 
 public interface EventService {
     EventResponseDto save (EventRequestDto eventRequestDto);

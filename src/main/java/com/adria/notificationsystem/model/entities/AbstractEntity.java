@@ -1,7 +1,7 @@
 package com.adria.notificationsystem.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
@@ -10,14 +10,19 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.UUID;
 
 @Getter
 @Setter
 @MappedSuperclass
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 @EntityListeners(AuditingEntityListener.class)
-public class AbstractEntity {
+@SuperBuilder(toBuilder = true)
+public abstract class AbstractEntity implements Serializable {
 
     @Id
     @GeneratedValue(generator = "UUID")
