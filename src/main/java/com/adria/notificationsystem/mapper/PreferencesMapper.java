@@ -2,11 +2,14 @@ package com.adria.notificationsystem.mapper;
 
 import com.adria.notificationsystem.dto.request.preferences.PreferencesRequestDto;
 import com.adria.notificationsystem.dto.request.preferences.SavePreferencesRequestDto;
+import com.adria.notificationsystem.dto.response.preferences.GetPreferencesResponseDto;
 import com.adria.notificationsystem.dto.response.preferences.SavePreferencesResponseDto;
 import com.adria.notificationsystem.model.entities.Preferences;
 import org.mapstruct.Builder;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+
+import java.util.List;
 
 @Mapper(builder = @Builder(disableBuilder = true), componentModel = "spring")
 public interface PreferencesMapper {
@@ -25,4 +28,12 @@ public interface PreferencesMapper {
     @Mapping(source = "recipientEmail", target = "recipient.email")
     @Mapping(source = "eventType", target = "event.type")
     Preferences toSaveEntity(SavePreferencesRequestDto preferencesRequestDto);
+
+
+    List<SavePreferencesResponseDto> toSaveListDto(List<Preferences> preferencesList);
+
+    List<Preferences> toListEntity(List<SavePreferencesRequestDto> preferencesRequestDtoList);
+
+    List<GetPreferencesResponseDto> toListDto(List<Preferences> preferencesList);
+
 }

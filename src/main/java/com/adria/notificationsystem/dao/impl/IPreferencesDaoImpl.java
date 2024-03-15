@@ -6,6 +6,8 @@ import com.adria.notificationsystem.repository.PreferencesRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class IPreferencesDaoImpl implements IPreferencesDao {
@@ -30,6 +32,16 @@ public class IPreferencesDaoImpl implements IPreferencesDao {
     @Override
     public boolean existsByEventType(String eventType) {
         return preferencesRepository.existsByEventType(eventType);
+    }
+
+    @Override
+    public List<Preferences> saveAll(List<Preferences> preferences) {
+        return preferencesRepository.saveAll(preferences);
+    }
+
+    @Override
+    public List<Preferences> findAll() {
+        return preferencesRepository.findAll();
     }
 
 }

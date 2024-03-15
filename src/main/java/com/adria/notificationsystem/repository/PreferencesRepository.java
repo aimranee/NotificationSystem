@@ -10,4 +10,5 @@ import java.util.List;
 public interface PreferencesRepository extends JpaRepository<Preferences,Long> {
     boolean existsByEventType(String eventType);
     List<Preferences> findAll();
+
 }
