@@ -1,12 +1,12 @@
 package com.adria.notificationsystem.utils;
 
-import com.adria.notificationsystem.models.NotificationSys;
-import com.adria.notificationsystem.models.Recipient;
-import com.adria.notificationsystem.repository.RecipientRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.adria.notificationsystem.dto.request.notification.NotificationDetailDto;
+import com.adria.notificationsystem.exception.EmailSendingException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.context.Context;
 
@@ -14,54 +14,80 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @Component
+@RequiredArgsConstructor
 public class EmailSenderUtils {
 
     private final JavaMailSender javaMailSender;
-
-    @Autowired
-    private RecipientRepository recipientRepository;
     private final SpringTemplateEngine templateEngine;
 
-    public EmailSenderUtils(JavaMailSender javaMailSender, SpringTemplateEngine templateEngine) {
-        this.javaMailSender = javaMailSender;
-        this.templateEngine = templateEngine;
-    }
-
-    public String emailSending(NotificationSys notification, String sender) {
+    public String emailSending(NotificationDetailDto notificationDto, String sender) {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
-        MimeMessageHelper mimeMessageHelper;
-        Recipient recipient = recipientRepository.findByUuid(notification.getRecipient().getUuid());
+        MimeMessageHelper messageHelper;
 
         try {
-            mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
+            messageHelper = new MimeMessageHelper(mimeMessage, true);
 
-            mimeMessageHelper.setFrom(sender);
-            mimeMessageHelper.setTo(recipient.getEmail());
-            mimeMessageHelper.setSubject(notification.getSubject());
+            messageHelper.setFrom(sender);
+            messageHelper.setTo(notificationDto.getRecipientDto().getEmail());
+            messageHelper.setSubject(notificationDto.getEventDto().getSubject());
 
             Context context = new Context();
-            context.setVariables(setVariablesOnEmailTemplate(notification));
+            context.setVariables(setVariablesOnEmailTemplate(notificationDto));
             String htmlContent = templateEngine.process("emailTemplate", context);
-            mimeMessageHelper.setText(htmlContent, true);
+            messageHelper.setText(htmlContent, true);
 
             javaMailSender.send(mimeMessage);
 
             return "Email Sent Successfully";
         } catch (MessagingException e ) {
-            throw new RuntimeException("Error while sending email!!", e);
+            throw new EmailSendingException("Error while sending email!!", e);
         }
     }
 
-    private Map<String, Object> setVariablesOnEmailTemplate(NotificationSys notificationSys) {
+    public String mailSendingWithAttachment(NotificationDetailDto notificationDto, String sender, List<MultipartFile> files) {
+        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+        MimeMessageHelper messageHelper;
+
+        try {
+            messageHelper = new MimeMessageHelper(mimeMessage, true);
+
+            messageHelper.setFrom(sender);
+            messageHelper.setTo(notificationDto.getRecipientDto().getEmail());
+            messageHelper.setSubject(notificationDto.getEventDto().getSubject());
+
+            Context context = new Context();
+            context.setVariables(setVariablesOnEmailTemplate(notificationDto));
+            String htmlContent = templateEngine.process("emailTemplate", context);
+            messageHelper.setText(htmlContent, true);
+
+            for (MultipartFile file : files) {
+                String originalFilename = Objects.requireNonNull(file.getOriginalFilename());
+                messageHelper.addAttachment(originalFilename, file);
+            }
+
+            javaMailSender.send(mimeMessage);
+
+            return "Mail Sent Successfully";
+        } catch (MessagingException e ) {
+            throw new RuntimeException ("Error while sending email!!", e);
+        }
+    }
+
+    private Map<String, Object> setVariablesOnEmailTemplate(NotificationDetailDto notificationDto) {
         Map<String, Object> templateVariables = new HashMap<>();
-        templateVariables.put("recipientName", notificationSys.getRecipient().toString());
+        templateVariables.put("recipientLastName", notificationDto.getRecipientDto().getLastName());
+        templateVariables.put("recipientFirstName", notificationDto.getRecipientDto().getFirstName());
         templateVariables.put("requestId", 100);
         templateVariables.put("requestDate", LocalDateTime.now());
-        templateVariables.put("senderName", "PSO Team, TechnoNext");
+        templateVariables.put("senderName", "Adria Business & Technology");
+        templateVariables.put("message", notificationDto.getMessage());
         return templateVariables;
     }
+
 
 }

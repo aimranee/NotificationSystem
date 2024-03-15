@@ -1,15 +1,12 @@
 package com.adria.notificationsystem.mapper;
 
 import com.adria.notificationsystem.dto.request.RecipientRequestDto;
-import com.adria.notificationsystem.models.Recipient;
+import com.adria.notificationsystem.model.entities.Recipient;
+import org.mapstruct.Builder;
 import org.mapstruct.Mapper;
-import org.mapstruct.factory.Mappers;
 
-@Mapper(componentModel = "spring")
+@Mapper(builder = @Builder(disableBuilder = true), componentModel = "spring")
 public interface RecipientMapper {
-
-
     RecipientRequestDto toDto(Recipient recipient);
-
     Recipient toEntity(RecipientRequestDto recipientDto);
 }

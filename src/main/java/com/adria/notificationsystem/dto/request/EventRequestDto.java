@@ -6,6 +6,8 @@ import org.springframework.stereotype.Component;
 @Data
 @Component
 public class EventRequestDto {
-    private EventTypeRequestDto type;
+    private String type;
     private boolean editable;
+    private String message;
+    private String subject;
 }
