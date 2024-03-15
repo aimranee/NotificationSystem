@@ -5,7 +5,6 @@ import org.springframework.stereotype.Component;
 
 @Data
 @Component
-public class EventRequestDto {
-    private EventTypeRequestDto type;
-    private boolean editable;
+public class EventTypeRequestDto {
+    private String title;
 }

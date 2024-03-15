@@ -7,10 +7,7 @@ import java.util.UUID;
 
 @Data
 @Component
-public class UsersResponseDto {
+public class EventTypeResponseDto {
     private UUID id;
-    private String firstName;
-    private String lastName;
-    private String serial;
-    private String email;
+    private String title;
 }
