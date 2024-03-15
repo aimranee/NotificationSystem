@@ -9,7 +9,7 @@ import javax.persistence.ManyToOne;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class NotificationPreferences extends AbstractEntity{
+public class Preferences extends AbstractEntity {
 
     @ManyToOne
     private Recipient recipient;

@@ -4,14 +4,14 @@ import com.adria.notificationsystem.dto.request.RecipientRequestDto;
 import com.adria.notificationsystem.mapper.RecipientMapper;
 import com.adria.notificationsystem.model.entities.Recipient;
 import com.adria.notificationsystem.repository.RecipientRepository;
-import com.adria.notificationsystem.dao.IRecipientService;
+import com.adria.notificationsystem.dao.IRecipientDao;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class IRecipientServiceImpl implements IRecipientService {
+public class IRecipientDaoImpl implements IRecipientDao {
 
     private final RecipientRepository recipientRepository;
     private final RecipientMapper recipientMapper;
@@ -37,6 +37,14 @@ public class IRecipientServiceImpl implements IRecipientService {
 
     @Override
     public Recipient findByEmail(String email) {
+        if (!recipientRepository.existsByEmail(email)) {
+            throw new DataIntegrityViolationException("doesn't exists.");
+        }
+        return recipientRepository.findByEmail(email);
+    }
+
+    @Override
+    public Recipient findByPhone(String email) {
         if (!recipientRepository.existsByEmail(email)) {
             throw new DataIntegrityViolationException("doesn't exists.");
         }

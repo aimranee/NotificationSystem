@@ -1,5 +1,7 @@
-package com.adria.notificationsystem.dto.request;
+package com.adria.notificationsystem.dto.request.notification;
 
+import com.adria.notificationsystem.dto.request.EventRequestDto;
+import com.adria.notificationsystem.dto.request.RecipientRequestDto;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;

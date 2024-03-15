@@ -1,4 +1,4 @@
-package com.adria.notificationsystem.dto.request;
+package com.adria.notificationsystem.dto.request.notification;
 
 import lombok.Data;
 import org.springframework.stereotype.Component;

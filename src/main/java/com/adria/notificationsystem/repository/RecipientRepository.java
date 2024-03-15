@@ -11,6 +11,6 @@ public interface RecipientRepository extends JpaRepository<Recipient,Long> {
     Recipient findByUuid(UUID uuid);
     Recipient findByEmail(String email);
     Recipient findByPhone(String phone);
-
     boolean existsByEmail(String email);
+    boolean existsByPhone(String phone);
 }

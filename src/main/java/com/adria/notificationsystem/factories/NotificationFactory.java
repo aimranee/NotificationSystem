@@ -1,6 +1,6 @@
 package com.adria.notificationsystem.factories;
 
-import com.adria.notificationsystem.dto.request.NotificationRequestDto;
+import com.adria.notificationsystem.dto.request.notification.NotificationRequestDto;
 import com.adria.notificationsystem.dto.response.NotificationResponseDto;
 import com.adria.notificationsystem.service.INotificationService;
 import lombok.RequiredArgsConstructor;

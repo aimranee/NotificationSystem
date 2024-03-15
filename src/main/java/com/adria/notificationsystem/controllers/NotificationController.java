@@ -1,6 +1,7 @@
-package com.adria.notificationsystem.controller;
+package com.adria.notificationsystem.controllers;
 
-import com.adria.notificationsystem.dto.request.NotificationRequestDto;
+import com.adria.notificationsystem.dao.IPreferencesDao;
+import com.adria.notificationsystem.dto.request.notification.NotificationRequestDto;
 import com.adria.notificationsystem.dto.response.NotificationResponseDto;
 import com.adria.notificationsystem.factories.NotificationFactory;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,7 @@ import java.util.List;
 public class NotificationController {
 
     private final NotificationFactory notificationFactory;
+    private final IPreferencesDao preferencesService;
 
     @PostMapping("/push-notification")
     public ResponseEntity<NotificationResponseDto> sendNotification(@RequestPart(name = "files", required = false) List<MultipartFile> files,

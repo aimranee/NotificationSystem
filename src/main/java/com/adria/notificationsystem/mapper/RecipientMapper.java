@@ -7,8 +7,6 @@ import org.mapstruct.Mapper;
 
 @Mapper(builder = @Builder(disableBuilder = true), componentModel = "spring")
 public interface RecipientMapper {
-
     RecipientRequestDto toDto(Recipient recipient);
-
     Recipient toEntity(RecipientRequestDto recipientDto);
 }
