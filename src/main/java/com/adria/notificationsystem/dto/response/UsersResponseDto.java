@@ -8,7 +8,7 @@ import java.util.UUID;
 @Data
 @Component
 public class UsersResponseDto {
-    private UUID id;
+    private UUID uuid;
     private String firstName;
     private String lastName;
     private String serial;
