@@ -1,6 +1,6 @@
 package com.adria.notification.dao;
 
-import com.adria.notification.model.entities.Preferences;
+import com.adria.notification.models.entities.Preferences;
 
 import java.util.List;
 

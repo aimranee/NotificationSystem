@@ -1,6 +1,6 @@
 package com.adria.notification.dao;
 
-import com.adria.notification.model.entities.MailConfiguration;
+import com.adria.notification.models.entities.MailConfiguration;
 
 public interface IMailConfigurationDao {
 

@@ -1,8 +1,8 @@
 package com.adria.notification.dao.impl;
 
 import com.adria.notification.dao.IMailConfigurationDao;
-import com.adria.notification.model.entities.MailConfiguration;
-import com.adria.notification.repository.MailConfigurationRepository;
+import com.adria.notification.models.entities.MailConfiguration;
+import com.adria.notification.repositories.MailConfigurationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

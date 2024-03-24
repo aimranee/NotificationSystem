@@ -1,7 +1,7 @@
 package com.adria.notification.utils;
 
 import com.adria.notification.dto.request.FileExtensionDto;
-import com.adria.notification.exception.BadRequestException;
+import com.adria.notification.exceptions.BadRequestException;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Objects;

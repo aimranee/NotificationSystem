@@ -2,7 +2,7 @@ package com.adria.notification.factories;
 
 import com.adria.notification.dto.request.notification.NotificationRequestDto;
 import com.adria.notification.dto.response.NotificationResponseDto;
-import com.adria.notification.service.INotificationService;
+import com.adria.notification.services.INotificationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;

@@ -1,9 +1,9 @@
 package com.adria.notification.dao.impl;
 
 import com.adria.notification.dto.request.RecipientRequestDto;
-import com.adria.notification.mapper.RecipientMapper;
-import com.adria.notification.model.entities.Recipient;
-import com.adria.notification.repository.RecipientRepository;
+import com.adria.notification.mappers.RecipientMapper;
+import com.adria.notification.models.entities.Recipient;
+import com.adria.notification.repositories.RecipientRepository;
 import com.adria.notification.dao.IRecipientDao;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;

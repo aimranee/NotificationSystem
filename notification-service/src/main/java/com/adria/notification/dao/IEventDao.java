@@ -2,7 +2,7 @@ package com.adria.notification.dao;
 
 import com.adria.notification.dto.request.EventRequestDto;
 import com.adria.notification.dto.response.EventResponseDto;
-import com.adria.notification.model.entities.Event;
+import com.adria.notification.models.entities.Event;
 
 public interface IEventDao {
     

@@ -2,9 +2,9 @@ package com.adria.notification.dao.impl;
 
 import com.adria.notification.dto.request.EventRequestDto;
 import com.adria.notification.dto.response.EventResponseDto;
-import com.adria.notification.mapper.EventMapper;
-import com.adria.notification.model.entities.Event;
-import com.adria.notification.repository.EventRepository;
+import com.adria.notification.mappers.EventMapper;
+import com.adria.notification.models.entities.Event;
+import com.adria.notification.repositories.EventRepository;
 import com.adria.notification.dao.IEventDao;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;

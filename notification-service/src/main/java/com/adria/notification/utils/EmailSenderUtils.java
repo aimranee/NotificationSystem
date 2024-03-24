@@ -1,7 +1,7 @@
 package com.adria.notification.utils;
 
 import com.adria.notification.dto.request.notification.NotificationDetailDto;
-import com.adria.notification.exception.EmailSendingException;
+import com.adria.notification.exceptions.EmailSendingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;

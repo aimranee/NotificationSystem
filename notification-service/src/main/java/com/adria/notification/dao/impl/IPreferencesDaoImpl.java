@@ -1,8 +1,8 @@
 package com.adria.notification.dao.impl;
 
 import com.adria.notification.dao.IPreferencesDao;
-import com.adria.notification.model.entities.Preferences;
-import com.adria.notification.repository.PreferencesRepository;
+import com.adria.notification.models.entities.Preferences;
+import com.adria.notification.repositories.PreferencesRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

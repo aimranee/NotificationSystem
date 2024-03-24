@@ -1,7 +1,7 @@
 package com.adria.notification.dao;
 
 import com.adria.notification.dto.request.RecipientRequestDto;
-import com.adria.notification.model.entities.Recipient;
+import com.adria.notification.models.entities.Recipient;
 
 public interface IRecipientDao {
 
