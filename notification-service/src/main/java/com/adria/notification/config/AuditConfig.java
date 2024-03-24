@@ -1,6 +1,6 @@
 package com.adria.notification.config;
 
-import com.adria.notification.service.impl.AuditorAwareImpl;
+import com.adria.notification.services.impl.AuditorAwareImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;
