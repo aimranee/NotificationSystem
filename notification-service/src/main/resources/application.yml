@@ -1,0 +1,52 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: notification-service
+  datasource:
+    url: jdbc:postgresql://localhost:5432/notificationSystem
+    username: postgres
+    password: root
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    open-in-view: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  cloud:
+    consul:
+      host: localhost
+      port: 8500
+      enabled: true
+      discovery:
+        enabled: true
+        hostname: localhost
+        serviceName: notification-service
+        port: ${server.port}
+        healthCheckUrl: http://${spring.cloud.consul.discovery.hostname}:${server.port}/actuator/health
+        healthCheckInterval: 10s
+        tags: dev
+  mail:
+    protocol: smtp
+    host: smtp.gmail.com
+    port: 587
+    username: instaaimrane@gmail.com
+    password: vqypgfgwqexsumxp
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+          ssl:
+            trust: smtp.gmail.com
+
+logging:
+  level:
+    org.springframework.web.filter.CommonsRequestLoggingFilter: DEBUG
+  pattern.level: '[%X{X-B3-TraceId}/%X{X-B3-SpanId}]%-5p [%t] %C{2} - %m%n'
