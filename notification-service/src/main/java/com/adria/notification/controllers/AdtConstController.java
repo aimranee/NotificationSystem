@@ -25,9 +25,9 @@ public class AdtConstController {
     }
 
     @PutMapping(value = "/update")
-    public ResponseEntity<ADTConstResponseDTO> update(@RequestBody @Valid UpdateADTConstRequestDTO editADTConstRequestDTO) {
+    public ResponseEntity<ADTConstResponseDTO> update(@RequestBody @Valid UpdateADTConstRequestDTO updateADTConstRequestDTO) {
         return ResponseEntity.ok()
-                .body(adtConstService.updateADTConst(editADTConstRequestDTO));
+                .body(adtConstService.updateADTConst(updateADTConstRequestDTO));
     }
 
     @GetMapping(value = "/details")

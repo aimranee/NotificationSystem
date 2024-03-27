@@ -10,9 +10,12 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ADTConstResponseDTO {
+
     private UUID id;
 
     private String code;
 
     private String value;
+
+    private boolean encrypted;
 }

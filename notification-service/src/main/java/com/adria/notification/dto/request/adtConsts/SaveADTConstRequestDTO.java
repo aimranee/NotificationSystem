@@ -13,4 +13,6 @@ public class SaveADTConstRequestDTO {
 
     private String value;
 
+    private Boolean encrypted;
+
 }

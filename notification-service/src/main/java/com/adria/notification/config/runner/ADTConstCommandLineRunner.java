@@ -3,19 +3,15 @@ package com.adria.notification.config.runner;
 import com.adria.notification.dao.IADTConstDAO;
 import com.adria.notification.models.entities.ADTConst;
 import com.adria.notification.models.enums.ADTConstCode;
-import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.core.annotation.Order;
 
 import javax.transaction.Transactional;
 
 @Transactional
 @Order(1)
-@Data
-@Lazy
 @Configuration("adtConstRunner")
 public class ADTConstCommandLineRunner implements CommandLineRunner {
 
@@ -45,12 +41,23 @@ public class ADTConstCommandLineRunner implements CommandLineRunner {
     @Value("${spring.mail.properties.mail.smtp.ssl.trust}")
     private String smtpSslTrust;
 
+    @Value("anNrc2xqdWhkbmVoeWRoag==")
+    private String secretKey;
+
     public ADTConstCommandLineRunner(IADTConstDAO adtConstDAO) {
         this.adtConstDAO = adtConstDAO;
     }
 
     @Override
     public void run(String... args) {
+
+        if (!adtConstDAO.existsByCode(ADTConstCode.SECRET_KEY)) {
+            adtConstDAO.save(ADTConst
+                    .builder()
+                    .code(ADTConstCode.SECRET_KEY)
+                    .value(secretKey)
+                    .build());
+        }
 
         if (!adtConstDAO.existsByCode(ADTConstCode.MAIL_HOST)) {
             adtConstDAO.save(ADTConst.builder().code(ADTConstCode.MAIL_HOST).value(host).build());
@@ -65,8 +72,7 @@ public class ADTConstCommandLineRunner implements CommandLineRunner {
         }
 
         if (!adtConstDAO.existsByCode(ADTConstCode.MAIL_PASSWORD)) {
-            adtConstDAO.save(ADTConst.builder().code(ADTConstCode.MAIL_PASSWORD).value(password).build());
-
+            adtConstDAO.save(ADTConst.builder().code(ADTConstCode.MAIL_PASSWORD).value(password).encrypted(false).build());
         }
 
         if (!adtConstDAO.existsByCode(ADTConstCode.MAIL_PROTOCOL)) {

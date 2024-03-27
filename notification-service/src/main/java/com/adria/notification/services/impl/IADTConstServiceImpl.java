@@ -41,9 +41,9 @@ public class IADTConstServiceImpl implements IADTConstService {
     }
 
     @Override
-    public ADTConstResponseDTO updateADTConst(UpdateADTConstRequestDTO editADTConstRequestDTO) {
-        ADTConst adtConst = adtConstDAO.findById(UUID.fromString(editADTConstRequestDTO.getId()));
-        adtConstMapper.toEntity(adtConst, editADTConstRequestDTO);
+    public ADTConstResponseDTO updateADTConst(UpdateADTConstRequestDTO updateADTConstRequestDTO) {
+        ADTConst adtConst = adtConstDAO.findById(UUID.fromString(updateADTConstRequestDTO.getId()));
+        adtConstMapper.toEntity(adtConst, updateADTConstRequestDTO);
         adtConst = adtConstDAO.save(adtConst);
         return adtConstMapper.toConstDTO(adtConst);
     }

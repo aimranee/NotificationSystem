@@ -5,6 +5,8 @@ import lombok.Getter;
 @Getter
 public enum ADTConstCode {
 
+    //Use it to encrypt secrets (eg: keycloak client secrets)
+    SECRET_KEY("secret-key"),
     MAIL_HOST("mail-host"),
     MAIL_PORT("mail-port"),
     MAIL_PROTOCOL("mail-protocol"),

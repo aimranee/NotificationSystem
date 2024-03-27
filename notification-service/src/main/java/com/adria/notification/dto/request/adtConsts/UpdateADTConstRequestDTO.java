@@ -17,4 +17,6 @@ public class UpdateADTConstRequestDTO {
     @NotEmpty
     private String value;
 
+    private Boolean encrypted;
+
 }
