@@ -1,8 +1,10 @@
 package com.adria.notification.config;
 
+import com.adria.notification.config.security.EncryptionSecurity;
 import com.adria.notification.dao.IADTConstDAO;
 import com.adria.notification.models.entities.ADTConst;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -16,15 +18,21 @@ import java.util.Properties;
 public class MailSenderConfig {
 
     private final IADTConstDAO adtConstDAO;
+    private final EncryptionSecurity encryptionSecurity;
 
     @Bean
+    @RefreshScope
     public JavaMailSender emailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
         List<ADTConst> adtConstList = adtConstDAO.findAll();
         Properties javaMailProperties = mailSender.getJavaMailProperties();
+        String secretKey = "";
 
         for (ADTConst constant : adtConstList) {
             switch (constant.getCode().toString()) {
+                case "SECRET_KEY":
+                    secretKey = constant.getValue();
+                    break;
                 case "MAIL_HOST":
                     mailSender.setHost(constant.getValue());
                     break;
@@ -35,7 +43,7 @@ public class MailSenderConfig {
                     mailSender.setUsername(constant.getValue());
                     break;
                 case "MAIL_PASSWORD":
-                    mailSender.setPassword(constant.getValue());
+                    mailSender.setPassword(encryptionSecurity.decryptSecret(constant.getValue(), secretKey));
                     break;
                 case "MAIL_PROTOCOL":
                     mailSender.setProtocol(constant.getValue());
