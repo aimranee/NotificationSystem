@@ -15,5 +15,5 @@ public class SavePreferencesRequestDto {
     @NotBlank
     private String recipientEmail;
     @NotBlank
-    private String eventType;
+    private String eventName;
 }

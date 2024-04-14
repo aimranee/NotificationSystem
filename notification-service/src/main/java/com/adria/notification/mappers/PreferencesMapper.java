@@ -14,19 +14,19 @@ import java.util.List;
 @Mapper(builder = @Builder(disableBuilder = true), componentModel = "spring")
 public interface PreferencesMapper {
     @Mapping(target = "recipientEmail", source = "recipient.email")
-    @Mapping(target = "eventType", source = "event.type")
+    @Mapping(target = "eventName", source = "event.name")
     PreferencesRequestDto toDto(Preferences preferences);
 
     @Mapping(source = "recipientEmail", target = "recipient.email")
-    @Mapping(source = "eventType", target = "event.type")
+    @Mapping(source = "eventName", target = "event.name")
     Preferences toEntity(PreferencesRequestDto preferencesRequestDto);
 
     @Mapping(target = "recipientEmail", source = "recipient.email")
-    @Mapping(target = "eventType", source = "event.type")
+    @Mapping(target = "eventName", source = "event.name")
     SavePreferencesResponseDto toSaveDto(Preferences preferences);
 
     @Mapping(source = "recipientEmail", target = "recipient.email")
-    @Mapping(source = "eventType", target = "event.type")
+    @Mapping(source = "eventName", target = "event.name")
     Preferences toSaveEntity(SavePreferencesRequestDto preferencesRequestDto);
 
 

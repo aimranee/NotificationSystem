@@ -30,8 +30,8 @@ public class IPreferencesDaoImpl implements IPreferencesDao {
     }
 
     @Override
-    public boolean existsByEventType(String eventType) {
-        return preferencesRepository.existsByEventType(eventType);
+    public boolean existsByEventName(String eventName) {
+        return preferencesRepository.existsByEventName(eventName);
     }
 
     @Override

@@ -8,7 +8,7 @@ import java.util.List;
 
 @Repository
 public interface PreferencesRepository extends JpaRepository<Preferences,Long> {
-    boolean existsByEventType(String eventType);
+    boolean existsByEventName(String eventName);
     List<Preferences> findAll();
 
 }

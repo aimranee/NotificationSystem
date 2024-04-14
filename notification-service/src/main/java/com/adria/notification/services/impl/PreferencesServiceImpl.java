@@ -30,11 +30,11 @@ public class PreferencesServiceImpl implements IPreferencesService {
     public List<SavePreferencesResponseDto> save(List<SavePreferencesRequestDto> preferencesDto) {
         List<Preferences> preferencesList = new ArrayList<>();
         for (SavePreferencesRequestDto preferenceDto : preferencesDto){
-            if(preferencesDao.existsByEventType(preferenceDto.getEventType())){
+            if(preferencesDao.existsByEventName(preferenceDto.getEventName())){
                 throw new RuntimeException("ErrorCode__EXISTS");
             }
             Preferences preferences = new Preferences();
-            preferences.setEvent(eventDao.findByType(preferenceDto.getEventType()));
+            preferences.setEvent(eventDao.findByName(preferenceDto.getEventName()));
             preferences.setRecipient(recipientDao.findByEmail(preferenceDto.getRecipientEmail()));
             preferencesList.add(preferences);
         }

@@ -45,7 +45,7 @@ public class EmailServiceImpl implements INotificationService<NotificationRespon
         NotificationResponseDto notificationResponseDto = new NotificationResponseDto();
         NotificationDetailDto notificationDetailDto = new NotificationDetailDto();
         try {
-            EventRequestDto eventDto = eventMapper.toDto(eventService.findByType(requestDto.getEventType()));
+            EventRequestDto eventDto = eventMapper.toDto(eventService.findByName(requestDto.getEventType()));
             RecipientRequestDto recipientDto = recipientMapper.toDto(recipientService.findByEmail(requestDto.getEmailRecipient()));
 //            if (recipient == null)
 //                recipient = recipientService.save(new RecipientRequestDto(requestDTO.getFirstName(), requestDTO.getLastName(), requestDTO.getEmailRecipient(), null, null));
@@ -55,7 +55,7 @@ public class EmailServiceImpl implements INotificationService<NotificationRespon
                 String message = otpService.getOtpMessage(recipientDto.getEmail(), otp);
                 notificationDetailDto.setMessage(message);
             }else{
-                notificationDetailDto.setMessage(eventDto.getMessage());
+//                notificationDetailDto.setMessage(eventDto.getMessage());
             }
 
             notificationDetailDto.setRecipientDto(recipientDto);
@@ -77,7 +77,7 @@ public class EmailServiceImpl implements INotificationService<NotificationRespon
             for (MultipartFile file : files)
                 FileUtils.isValid(file);
 
-            Event event = eventService.findByType(requestDto.getEventType());
+            Event event = eventService.findByName(requestDto.getEventType());
             Recipient recipient = recipientService.findByEmail(requestDto.getEmailRecipient());
             notificationDetailDto.setEventDto(eventMapper.toDto(event));
             notificationDetailDto.setRecipientDto(recipientMapper.toDto(recipient));
@@ -87,7 +87,7 @@ public class EmailServiceImpl implements INotificationService<NotificationRespon
                 String message = otpService.getOtpMessage(recipient.getEmail(), otp);
                 notificationDetailDto.setMessage(message);
             }else{
-                notificationDetailDto.setMessage(event.getMessage());
+//                notificationDetailDto.setMessage(event.getMessage());
             }
 
             String result = emailSenderUtils.mailSendingWithAttachment(notificationDetailDto, sender, files);

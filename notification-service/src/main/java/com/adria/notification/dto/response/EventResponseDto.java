@@ -9,8 +9,6 @@ import java.util.UUID;
 @Component
 public class EventResponseDto {
     private UUID uuid;
-    private String type;
+    private String name;
     private boolean editable;
-    private String message;
-    private String subject;
 }
