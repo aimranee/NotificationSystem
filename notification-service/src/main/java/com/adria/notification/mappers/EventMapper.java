@@ -6,6 +6,8 @@ import com.adria.notification.models.entities.Event;
 import org.mapstruct.Builder;
 import org.mapstruct.Mapper;
 
+import java.util.List;
+
 @Mapper(builder = @Builder(disableBuilder = true), componentModel = "spring")
 public interface EventMapper {
 
@@ -15,4 +17,5 @@ public interface EventMapper {
 
     Event toEntity(EventRequestDto eventDto);
 
+    List<EventResponseDto> toDtoList(List<Event> events);
 }

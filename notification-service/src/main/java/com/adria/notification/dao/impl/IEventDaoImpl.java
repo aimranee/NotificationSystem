@@ -1,46 +1,41 @@
 package com.adria.notification.dao.impl;
 
-import com.adria.notification.dto.request.EventRequestDto;
-import com.adria.notification.dto.response.EventResponseDto;
-import com.adria.notification.mappers.EventMapper;
 import com.adria.notification.models.entities.Event;
 import com.adria.notification.repositories.EventRepository;
 import com.adria.notification.dao.IEventDao;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class IEventDaoImpl implements IEventDao {
 
     private final EventRepository eventRepository;
-    private final EventMapper eventMapper;
-
 
     @Override
-    public EventResponseDto save(EventRequestDto eventRequestDto) {
-        Event event = eventMapper.toEntity(eventRequestDto);
-        if (eventRepository.existsByType(event.getType())) {
-            throw new DataIntegrityViolationException("An event with the same eventType already exists.");
-        }
-        event = eventRepository.save(event);
-        return eventMapper.toResponseDto(event);
+    public Event save(Event event) {
+        return eventRepository.save(event);
     }
 
     @Override
-    public EventResponseDto update(EventRequestDto event) {
-        return null;
+    public Event update(Event event) {
+        return eventRepository.save(event);
     }
 
     @Override
-    public void delete(EventRequestDto event) {
-
+    public void delete(Event event) {
+        eventRepository.delete(event);
     }
 
     @Override
-    public Event findByType(String type) {
-        Event event = eventRepository.findByType(type);
-        return event;
+    public Event findByName(String name) {
+        return eventRepository.findByName(name);
+    }
+
+    @Override
+    public List<Event> findAll() {
+        return  eventRepository.findAll();
     }
 }

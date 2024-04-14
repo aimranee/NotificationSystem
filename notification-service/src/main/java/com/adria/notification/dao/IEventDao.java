@@ -1,14 +1,14 @@
 package com.adria.notification.dao;
 
-import com.adria.notification.dto.request.EventRequestDto;
-import com.adria.notification.dto.response.EventResponseDto;
 import com.adria.notification.models.entities.Event;
+
+import java.util.List;
 
 public interface IEventDao {
     
-    EventResponseDto save (EventRequestDto eventRequestDto);
-    EventResponseDto update (EventRequestDto event);
-    void delete (EventRequestDto event);
-    Event findByType (String type);
-
+    Event save (Event event);
+    Event update (Event event);
+    void delete (Event event);
+    Event findByName (String name);
+    List<Event> findAll();
 }
