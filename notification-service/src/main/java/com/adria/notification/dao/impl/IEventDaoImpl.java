@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -35,7 +36,12 @@ public class IEventDaoImpl implements IEventDao {
     }
 
     @Override
+    public Event findById(UUID id) {
+        return eventRepository.findById(id);
+    }
+
+    @Override
     public List<Event> findAll() {
-        return  eventRepository.findAll();
+        return eventRepository.findAll();
     }
 }

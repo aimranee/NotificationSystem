@@ -3,6 +3,7 @@ package com.adria.notification.dao;
 import com.adria.notification.models.entities.Event;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface IEventDao {
     
@@ -10,5 +11,6 @@ public interface IEventDao {
     Event update (Event event);
     void delete (Event event);
     Event findByName (String name);
+    Event findById (UUID id);
     List<Event> findAll();
 }

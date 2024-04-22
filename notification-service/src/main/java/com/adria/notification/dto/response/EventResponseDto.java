@@ -1,14 +1,17 @@
 package com.adria.notification.dto.response;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.UUID;
 
 @Data
-@Component
+@AllArgsConstructor
+@NoArgsConstructor
 public class EventResponseDto {
-    private UUID uuid;
+    private UUID id;
     private String name;
     private boolean editable;
 }

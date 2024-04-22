@@ -1,6 +1,7 @@
 package com.adria.notification.controllers;
 
 import com.adria.notification.dto.request.EventRequestDto;
+import com.adria.notification.dto.request.UpdateEventDto;
 import com.adria.notification.dto.response.EventResponseDto;
 import com.adria.notification.services.IEventService;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,6 +22,21 @@ public class EventController {
     @PostMapping("/save")
     public ResponseEntity<EventRequestDto> save(@Valid @RequestBody EventRequestDto eventDto){
         return ResponseEntity.ok().body(eventService.save(eventDto));
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<EventResponseDto> update(@Valid @RequestBody UpdateEventDto eventDto){
+        return ResponseEntity.ok().body(eventService.update(eventDto));
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public void delete(@Valid @PathVariable UUID id){
+        eventService.delete(id);
+    }
+
+    @GetMapping("/find/{id}")
+    public ResponseEntity<EventResponseDto> findById(@PathVariable UUID id){
+        return ResponseEntity.ok().body(eventService.findById(id));
     }
 
     @GetMapping("/findAll")

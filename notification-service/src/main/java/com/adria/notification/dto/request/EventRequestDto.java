@@ -1,10 +1,12 @@
 package com.adria.notification.dto.request;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.springframework.stereotype.Component;
+import lombok.NoArgsConstructor;
 
 @Data
-@Component
+@AllArgsConstructor
+@NoArgsConstructor
 public class EventRequestDto {
     private String name;
     private boolean editable;

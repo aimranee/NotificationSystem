@@ -1,6 +1,7 @@
 package com.adria.notification.mappers;
 
 import com.adria.notification.dto.request.EventRequestDto;
+import com.adria.notification.dto.request.UpdateEventDto;
 import com.adria.notification.dto.response.EventResponseDto;
 import com.adria.notification.models.entities.Event;
 import org.mapstruct.Builder;
@@ -16,6 +17,6 @@ public interface EventMapper {
     EventResponseDto toResponseDto(Event event);
 
     Event toEntity(EventRequestDto eventDto);
-
+    Event toUpdateEntity(UpdateEventDto eventDto);
     List<EventResponseDto> toDtoList(List<Event> events);
 }

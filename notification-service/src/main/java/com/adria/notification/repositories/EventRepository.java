@@ -12,5 +12,4 @@ public interface EventRepository extends JpaRepository<Event,Long> {
     Event findById(UUID id);
     Event findByName(String eventName);
     boolean existsByName(String eventName);
-    List<Event> findAll();
 }
