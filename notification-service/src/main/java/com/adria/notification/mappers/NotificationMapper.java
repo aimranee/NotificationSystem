@@ -9,12 +9,12 @@ import org.mapstruct.Mapping;
 
 @Mapper(builder = @Builder(disableBuilder = true), componentModel = "spring")
 public interface NotificationMapper {
-    @Mapping(target = "event.type", source = "eventType")
+    @Mapping(target = "event.name", source = "eventName")
     @Mapping(target = "recipient.email", source = "emailRecipient")
     @Mapping(target = "recipient.phone", source = "phoneRecipient")
     NotificationSys toEntity(NotificationRequestDto requestDto);
 
-    @Mapping(source = "event.type", target = "eventType")
+    @Mapping(source = "event.name", target = "eventName")
     @Mapping(source = "recipient.email", target = "emailRecipient")
     @Mapping(source = "recipient.phone", target = "phoneRecipient")
     NotificationRequestDto toDto(NotificationSys notificationSys);

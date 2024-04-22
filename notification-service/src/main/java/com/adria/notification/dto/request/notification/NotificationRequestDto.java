@@ -10,7 +10,7 @@ import javax.validation.constraints.Pattern;
 @Component
 public class NotificationRequestDto {
     @NotBlank(message = "Event type must not be blank")
-    private String eventType;
+    private String eventName;
     @NotBlank(message = "Email recipient must not be blank")
     @Pattern(regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$", message = "Invalid email format")
     private String emailRecipient;

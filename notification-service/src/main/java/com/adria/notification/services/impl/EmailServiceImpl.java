@@ -45,12 +45,12 @@ public class EmailServiceImpl implements INotificationService<NotificationRespon
         NotificationResponseDto notificationResponseDto = new NotificationResponseDto();
         NotificationDetailDto notificationDetailDto = new NotificationDetailDto();
         try {
-            EventRequestDto eventDto = eventMapper.toDto(eventService.findByName(requestDto.getEventType()));
+            EventRequestDto eventDto = eventMapper.toDto(eventService.findByName(requestDto.getEventName()));
             RecipientRequestDto recipientDto = recipientMapper.toDto(recipientService.findByEmail(requestDto.getEmailRecipient()));
 //            if (recipient == null)
 //                recipient = recipientService.save(new RecipientRequestDto(requestDTO.getFirstName(), requestDTO.getLastName(), requestDTO.getEmailRecipient(), null, null));
 
-            if ("OTP".equals(requestDto.getEventType())){
+            if ("OTP".equals(requestDto.getEventName())){
                 String otp = otpService.generateRandomOtp(6);
                 String message = otpService.getOtpMessage(recipientDto.getEmail(), otp);
                 notificationDetailDto.setMessage(message);
@@ -77,12 +77,12 @@ public class EmailServiceImpl implements INotificationService<NotificationRespon
             for (MultipartFile file : files)
                 FileUtils.isValid(file);
 
-            Event event = eventService.findByName(requestDto.getEventType());
+            Event event = eventService.findByName(requestDto.getEventName());
             Recipient recipient = recipientService.findByEmail(requestDto.getEmailRecipient());
             notificationDetailDto.setEventDto(eventMapper.toDto(event));
             notificationDetailDto.setRecipientDto(recipientMapper.toDto(recipient));
 
-            if (requestDto.getEventType()=="OTP"){
+            if (requestDto.getEventName()=="OTP"){
                 String otp = otpService.generateRandomOtp(6);
                 String message = otpService.getOtpMessage(recipient.getEmail(), otp);
                 notificationDetailDto.setMessage(message);

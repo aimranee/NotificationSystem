@@ -13,10 +13,10 @@ public class UpdateADTConstRequestDTO {
 
     @NotEmpty
     private String id;
-
+    @NotEmpty
+    private String providerName;
     @NotEmpty
     private String value;
-
     private Boolean encrypted;
 
 }
