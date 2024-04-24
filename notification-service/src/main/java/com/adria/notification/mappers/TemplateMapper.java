@@ -2,11 +2,8 @@ package com.adria.notification.mappers;
 
 import com.adria.notification.dto.request.template.EmailTemplateRequestDto;
 import com.adria.notification.dto.request.template.SmsTemplateRequestDto;
-import com.adria.notification.dto.response.preferences.SavePreferencesResponseDto;
 import com.adria.notification.dto.response.template.EmailTemplateResponseDto;
-import com.adria.notification.dto.response.template.SaveEmailTemplateResponseDto;
 import com.adria.notification.dto.response.template.SmsTemplateResponseDto;
-import com.adria.notification.models.entities.Preferences;
 import com.adria.notification.models.entities.Template;
 import org.mapstruct.Builder;
 import org.mapstruct.Mapper;

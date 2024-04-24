@@ -3,7 +3,6 @@ package com.adria.notification.controllers;
 import com.adria.notification.dto.request.template.EmailTemplateRequestDto;
 import com.adria.notification.dto.request.template.SmsTemplateRequestDto;
 import com.adria.notification.dto.response.template.EmailTemplateResponseDto;
-import com.adria.notification.dto.response.template.SaveEmailTemplateResponseDto;
 import com.adria.notification.dto.response.template.SmsTemplateResponseDto;
 import com.adria.notification.services.ITemplateService;
 import lombok.RequiredArgsConstructor;
