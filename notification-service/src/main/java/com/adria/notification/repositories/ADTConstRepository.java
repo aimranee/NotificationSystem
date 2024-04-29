@@ -15,5 +15,6 @@ public interface ADTConstRepository extends JpaRepository<ADTConst, UUID>, JpaSp
     boolean existsByCode(ADTConstCode code);
     Optional<ADTConst> findById(UUID id);
     List<ADTConst> findAllByCodeIn(List<ADTConstCode> codes);
+    List<ADTConst> findAllByName(String type);
     Optional<ADTConst> findADTConstByCode(ADTConstCode code);
 }
