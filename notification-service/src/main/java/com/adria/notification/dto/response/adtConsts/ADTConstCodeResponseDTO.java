@@ -11,6 +11,6 @@ import java.util.UUID;
 @NoArgsConstructor
 public class ADTConstCodeResponseDTO {
     private UUID id;
-    private String providerName;
+    private String name;
     private String code;
 }

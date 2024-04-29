@@ -69,4 +69,9 @@ public class ADTConstDAOFromDatabaseImpl implements IADTConstDAO {
 
     }
 
+    @Override
+    public List<ADTConst> getADTConstByName(String name) {
+        return adtConstRepository.findAllByName(name);
+    }
+
 }

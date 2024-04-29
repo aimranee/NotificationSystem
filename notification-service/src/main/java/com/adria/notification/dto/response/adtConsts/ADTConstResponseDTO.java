@@ -14,7 +14,7 @@ public class ADTConstResponseDTO {
 
     private UUID id;
     private String code;
-    private String providerName;
+    private String name;
     private String value;
     private boolean encrypted;
     private Date createdDate;

@@ -10,13 +10,10 @@ import java.util.List;
 public interface IADTConstService {
 
     ADTConstResponseDTO getADTConstById(String id);
-
     List<ADTConstResponseDTO> getAllADTConst();
-
     ADTConstResponseDTO saveADTConst(SaveADTConstRequestDTO saveAdtConstRequestDTO);
-
     ADTConstResponseDTO updateADTConst(UpdateADTConstRequestDTO updateADTConstRequestDTO);
-
     List<ADTConstCodeResponseDTO> getAllADTConstCodes();
+    List<ADTConstResponseDTO> getAllADTConstByName(String name);
 
 }

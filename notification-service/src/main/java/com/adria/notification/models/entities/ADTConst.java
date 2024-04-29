@@ -27,7 +27,7 @@ public class ADTConst extends AbstractEntity {
     private ADTConstCode code;
 
     @Column(nullable = false)
-    private String providerName;
+    private String name;
 
     @Column(nullable = false)
     private String value;

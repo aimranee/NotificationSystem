@@ -52,39 +52,39 @@ public class ADTConstCommandLineRunner implements CommandLineRunner {
     public void run(String... args) {
 
         if (!adtConstDAO.existsByCode(ADTConstCode.SECRET_KEY)) {
-            adtConstDAO.save(ADTConst.builder().code(ADTConstCode.SECRET_KEY).value(secretKey).providerName("encryption").build());
+            adtConstDAO.save(ADTConst.builder().code(ADTConstCode.SECRET_KEY).value(secretKey).name("encryption").build());
         }
 
         if (!adtConstDAO.existsByCode(ADTConstCode.MAIL_HOST)) {
-            adtConstDAO.save(ADTConst.builder().code(ADTConstCode.MAIL_HOST).value(host).providerName("smtp").build());
+            adtConstDAO.save(ADTConst.builder().code(ADTConstCode.MAIL_HOST).value(host).name("smtp").build());
         }
 
         if (!adtConstDAO.existsByCode(ADTConstCode.MAIL_PORT)) {
-            adtConstDAO.save(ADTConst.builder().code(ADTConstCode.MAIL_PORT).value(port.toString()).providerName("smtp").build());
+            adtConstDAO.save(ADTConst.builder().code(ADTConstCode.MAIL_PORT).value(port.toString()).name("smtp").build());
         }
 
         if (!adtConstDAO.existsByCode(ADTConstCode.MAIL_USERNAME)) {
-            adtConstDAO.save(ADTConst.builder().code(ADTConstCode.MAIL_USERNAME).value(username).providerName("smtp").build());
+            adtConstDAO.save(ADTConst.builder().code(ADTConstCode.MAIL_USERNAME).value(username).name("smtp").build());
         }
 
         if (!adtConstDAO.existsByCode(ADTConstCode.MAIL_PASSWORD)) {
-            adtConstDAO.save(ADTConst.builder().code(ADTConstCode.MAIL_PASSWORD).value(password).encrypted(false).providerName("smtp").build());
+            adtConstDAO.save(ADTConst.builder().code(ADTConstCode.MAIL_PASSWORD).value(password).encrypted(false).name("smtp").build());
         }
 
         if (!adtConstDAO.existsByCode(ADTConstCode.MAIL_PROTOCOL)) {
-            adtConstDAO.save(ADTConst.builder().code(ADTConstCode.MAIL_PROTOCOL).value(transportProtocol).providerName("smtp").build());
+            adtConstDAO.save(ADTConst.builder().code(ADTConstCode.MAIL_PROTOCOL).value(transportProtocol).name("smtp").build());
         }
 
         if (!adtConstDAO.existsByCode(ADTConstCode.MAIL_PROPERTIES_MAIL_SMTP_AUTH)) {
-            adtConstDAO.save(ADTConst.builder().code(ADTConstCode.MAIL_PROPERTIES_MAIL_SMTP_AUTH).value(smtpAuth.toString()).providerName("smtp").build());
+            adtConstDAO.save(ADTConst.builder().code(ADTConstCode.MAIL_PROPERTIES_MAIL_SMTP_AUTH).value(smtpAuth.toString()).name("smtp").build());
         }
 
         if (!adtConstDAO.existsByCode(ADTConstCode.MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_ENABLE)) {
-            adtConstDAO.save(ADTConst.builder().code(ADTConstCode.MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_ENABLE).value(enableSmtpStartTls.toString()).providerName("smtp").build());
+            adtConstDAO.save(ADTConst.builder().code(ADTConstCode.MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_ENABLE).value(enableSmtpStartTls.toString()).name("smtp").build());
         }
 
         if (!adtConstDAO.existsByCode(ADTConstCode.MAIL_PROPERTIES_MAIL_SMTP_SSL_TRUST)) {
-            adtConstDAO.save(ADTConst.builder().code(ADTConstCode.MAIL_PROPERTIES_MAIL_SMTP_SSL_TRUST).value(smtpSslTrust).providerName("smtp").build());
+            adtConstDAO.save(ADTConst.builder().code(ADTConstCode.MAIL_PROPERTIES_MAIL_SMTP_SSL_TRUST).value(smtpSslTrust).name("smtp").build());
         }
 
     }

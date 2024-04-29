@@ -20,7 +20,8 @@ public class BeansConfig {
             return adtConstDao.save(ADTConst
                     .builder()
                     .code(ADTConstCode.SECRET_KEY)
-                    .value("anNrc2xqdWhkbmVoeWRoag==").providerName("encryption")
+                    .value("anNrc2xqdWhkbmVoeWRoag==")
+                    .name("AES")
                     .build());
         } else {
             return adtConstDao.findADTConstByCode(ADTConstCode.SECRET_KEY);
