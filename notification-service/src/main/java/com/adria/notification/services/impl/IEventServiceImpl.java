@@ -1,8 +1,8 @@
 package com.adria.notification.services.impl;
 
 import com.adria.notification.dao.IEventDao;
-import com.adria.notification.dto.request.EventRequestDto;
-import com.adria.notification.dto.request.UpdateEventDto;
+import com.adria.notification.dto.request.event.EventRequestDto;
+import com.adria.notification.dto.request.event.UpdateEventDto;
 import com.adria.notification.dto.response.EventResponseDto;
 import com.adria.notification.mappers.EventMapper;
 import com.adria.notification.models.entities.Event;
