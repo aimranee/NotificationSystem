@@ -1,6 +1,6 @@
 package com.adria.notification.services.impl;
 
-import com.adria.notification.dto.request.EventRequestDto;
+import com.adria.notification.dto.request.event.EventRequestDto;
 import com.adria.notification.dto.request.notification.NotificationDetailDto;
 import com.adria.notification.dto.request.notification.NotificationRequestDto;
 import com.adria.notification.dto.request.RecipientRequestDto;

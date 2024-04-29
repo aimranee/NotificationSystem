@@ -1,7 +1,7 @@
 package com.adria.notification.controllers;
 
-import com.adria.notification.dto.request.EventRequestDto;
-import com.adria.notification.dto.request.UpdateEventDto;
+import com.adria.notification.dto.request.event.EventRequestDto;
+import com.adria.notification.dto.request.event.UpdateEventDto;
 import com.adria.notification.dto.response.EventResponseDto;
 import com.adria.notification.services.IEventService;
 import lombok.RequiredArgsConstructor;

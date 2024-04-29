@@ -1,4 +1,4 @@
-package com.adria.notification.dto.request;
+package com.adria.notification.dto.request.event;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
