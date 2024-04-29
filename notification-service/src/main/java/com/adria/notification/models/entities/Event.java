@@ -13,8 +13,5 @@ public class Event extends AbstractEntity {
     @Column(unique = true)
     private String name;
     private boolean editable;
-    @OneToOne
-    private Template template;
-
 
 }

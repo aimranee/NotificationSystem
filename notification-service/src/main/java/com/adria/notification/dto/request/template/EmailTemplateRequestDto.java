@@ -1,5 +1,6 @@
 package com.adria.notification.dto.request.template;
 
+import com.adria.notification.dto.response.EmailProviderResponseDto;
 import com.adria.notification.dto.response.EventResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,4 +20,6 @@ public class EmailTemplateRequestDto {
     private String emailRenderedHtml;
     @Valid
     private EventResponseDto event;
+    @Valid
+    private EmailProviderResponseDto emailProvider;
 }
