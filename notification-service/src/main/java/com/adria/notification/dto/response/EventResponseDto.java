@@ -12,7 +12,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public class EventResponseDto {
     private UUID id;
-    private String name;
+    private String eventName;
     private boolean editable;
     private String notificationType;
 }

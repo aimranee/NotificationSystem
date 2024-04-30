@@ -1,8 +1,13 @@
 package com.adria.notification.dao.impl;
 
+import com.adria.notification.dao.IEventDao;
+import com.adria.notification.dto.request.template.EmailTemplateRequestDto;
+//import com.adria.notification.dto.request.template.SmsTemplateRequestDto;
+import com.adria.notification.dto.response.template.EmailTemplateResponseDto;
+//import com.adria.notification.dto.response.template.SmsTemplateResponseDto;
+import com.adria.notification.mappers.EventMapper;
 import com.adria.notification.models.entities.Event;
 import com.adria.notification.repositories.EventRepository;
-import com.adria.notification.dao.IEventDao;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,39 +19,57 @@ import java.util.UUID;
 public class IEventDaoImpl implements IEventDao {
 
     private final EventRepository eventRepository;
+    private final EventMapper eventMapper;
 
     @Override
-    public Event save(Event event) {
-        return eventRepository.save(event);
-    }
-
-    @Override
-    public Event update(Event event) {
-        return eventRepository.save(event);
-    }
-
-    @Override
-    public void delete(Event event) {
-        eventRepository.delete(event);
-    }
-
-    @Override
-    public Event findByName(String name) {
-        return eventRepository.findByName(name);
+    public int updateEditable(UUID id, boolean editable) {
+        return eventRepository.updateEditableById(id, editable);
     }
 
     @Override
     public Event findById(UUID id) {
-        return eventRepository.findById(id);
+        return eventRepository.findById(id).orElse(null);
     }
 
     @Override
-    public List<Event> findByNotificationType(String notificationType) {
-        return eventRepository.findByNotificationType(notificationType);
+    public Event saveEmail(EmailTemplateRequestDto emailTemplate) {
+        return eventRepository.save(eventMapper.toEmailTemplateEntity(emailTemplate));
+    }
+
+//    @Override
+//    public Template saveSms(SmsTemplateRequestDto smsTemplate) {
+//        return templateRepository.save(templateMapper.toSmsTemplateEntity(smsTemplate));
+//    }
+
+    @Override
+    public Event updateEmail(EmailTemplateRequestDto emailTemplate) {
+        return eventRepository.save(eventMapper.toEmailTemplateEntity(emailTemplate));
     }
 
     @Override
-    public List<Event> findAll() {
-        return eventRepository.findAll();
+    public List<Event> findAllByNotificationType(String type) {
+        return eventRepository.findAllByNotificationType(type);
     }
+
+//    @Override
+//    public Template updateSms(SmsTemplateRequestDto smsTemplate) {
+//        return templateRepository.save(templateMapper.toSmsTemplateEntity(smsTemplate));
+//    }
+
+
+
+    @Override
+    public void deleteEmail(EmailTemplateResponseDto emailTemplate) {
+        eventRepository.delete(eventMapper.toEmailTemplateEntity(emailTemplate));
+    }
+
+    @Override
+    public Event findByEventName(String event) {
+        return eventRepository.findByEventName(event);
+    }
+
+//    @Override
+//    public void deleteSms(SmsTemplateResponseDto smsTemplate) {
+//        templateRepository.delete(templateMapper.toSmsTemplateEntity(smsTemplate));
+//    }
 }

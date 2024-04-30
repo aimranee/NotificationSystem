@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EventRequestDto {
-    private String name;
+    private String eventName;
     private boolean editable;
     private String notificationType;
 }

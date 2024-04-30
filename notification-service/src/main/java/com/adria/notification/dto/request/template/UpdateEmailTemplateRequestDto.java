@@ -6,11 +6,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.Valid;
+import java.util.UUID;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class EmailTemplateRequestDto {
+public class UpdateEmailTemplateRequestDto {
+    private UUID id;
     private String eventName;
     private boolean editable;
     private String notificationType;

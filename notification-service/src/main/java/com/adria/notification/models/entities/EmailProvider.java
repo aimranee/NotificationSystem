@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Type;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
@@ -14,6 +13,7 @@ import javax.persistence.Entity;
 @NoArgsConstructor
 @Data
 public class EmailProvider extends AbstractEntity {
+
     @Column(unique = true, nullable = false)
     private String name;
     @Column(nullable = false)
@@ -36,4 +36,5 @@ public class EmailProvider extends AbstractEntity {
     private boolean starttlsEnable;
     @Column(nullable = false)
     private String sslTrust;
+
 }

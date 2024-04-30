@@ -10,8 +10,9 @@ import java.util.UUID;
 @NoArgsConstructor
 public class EmailTemplateResponseDto {
     private UUID id;
+    private boolean editable;
+    private String notificationType;
     private String subject;
-    private String type;
     private String description;
     private String language;
     private String emailMarkup;

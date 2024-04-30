@@ -1,64 +1,85 @@
 package com.adria.notification.services.impl;
 
 import com.adria.notification.dao.IEventDao;
-import com.adria.notification.dto.request.event.EventRequestDto;
-import com.adria.notification.dto.request.event.UpdateEventDto;
+import com.adria.notification.dto.request.template.EmailTemplateRequestDto;
+//import com.adria.notification.dto.request.template.SmsTemplateRequestDto;
 import com.adria.notification.dto.response.EventResponseDto;
+import com.adria.notification.dto.response.template.EmailTemplateResponseDto;
+//import com.adria.notification.dto.response.template.SmsTemplateResponseDto;
 import com.adria.notification.mappers.EventMapper;
-import com.adria.notification.models.entities.Event;
 import com.adria.notification.services.IEventService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class IEventServiceImpl implements IEventService {
 
-    private final IEventDao eventDao;
-
+    private final IEventDao templateDao;
     private final EventMapper eventMapper;
 
     @Override
-    public EventRequestDto save(EventRequestDto event) {
-        Event eventEntity = eventDao.save(eventMapper.toEntity(event));
-        return eventMapper.toDto(eventEntity);
+    public EmailTemplateRequestDto saveEmail(EmailTemplateRequestDto emailTemplate) {
+        return eventMapper.toEmailTemplateDto(templateDao.saveEmail(emailTemplate));
+    }
+
+//    @Override
+//    public SmsTemplateRequestDto saveSms(SmsTemplateRequestDto smsTemplate) {
+//        return templateMapper.toSmsTemplateDto(templateDao.saveSms(smsTemplate));
+//    }
+
+    @Override
+    public EmailTemplateRequestDto updateEmail(EmailTemplateRequestDto emailTemplate) {
+        return eventMapper.toEmailTemplateDto(templateDao.updateEmail(emailTemplate));
+    }
+
+//    @Override
+//    public SmsTemplateRequestDto updateSms(SmsTemplateRequestDto smsTemplate) {
+//        return templateMapper.toSmsTemplateDto(templateDao.updateSms(smsTemplate));
+//    }
+
+    @Override
+    public void deleteEmail(EmailTemplateResponseDto emailTemplate) {
+        templateDao.deleteEmail(emailTemplate);
+    }
+
+//    @Override
+//    public void deleteSms(SmsTemplateResponseDto smsTemplate) {
+//        templateDao.deleteSms(smsTemplate);
+//    }
+
+    @Override
+    public List<EmailTemplateResponseDto> findAllEmail(String type) {
+        return eventMapper.toEmailTemplateDtoList(templateDao.findAllByNotificationType(type));
     }
 
     @Override
-    public EventResponseDto update(UpdateEventDto event) {
-        Event eventEntity = eventDao.update(eventMapper.toUpdateEntity(event));
-        return eventMapper.toResponseDto(eventEntity);
+    public EmailTemplateRequestDto findByEventName(String event) {
+        return eventMapper.toEmailTemplateDto(templateDao.findByEventName(event));
     }
 
     @Override
-    public void delete(UUID id) {
-        Event event = eventDao.findById(id);
-        eventDao.delete(event);
-    }
-
-    @Override
-    public List<EventResponseDto> findAll() {
-        List<Event> events = eventDao.findAll();
-        return eventMapper.toDtoList(events);
-    }
-
-    @Override
-    public EventResponseDto findByName(String name) {
-        Event event = eventDao.findByName(name);
-        return eventMapper.toResponseDto(event);
+    public EventResponseDto updateEditable(UUID id, boolean editable) {
+        int res = templateDao.updateEditable(id, editable);
+        if (res==1){
+            return eventMapper.toEventResponseDto(templateDao.findById(id));
+        }else{
+            return null;
+        }
     }
 
     @Override
     public EventResponseDto findById(UUID id) {
-        Event event = eventDao.findById(id);
-        return eventMapper.toResponseDto(event);
+        return eventMapper.toEventResponseDto(templateDao.findById(id));
     }
 
-    @Override
-    public List<EventResponseDto> findByNotificationType(String notificationType) {
-        return eventMapper.toDtoList(eventDao.findByNotificationType(notificationType));
-    }
+//    @Override
+//    public List<SmsTemplateResponseDto> findAllSms(String type) {
+//        return templateMapper.toSmsTemplateDtoList(templateDao.findAllByType(type));
+//    }
 }
