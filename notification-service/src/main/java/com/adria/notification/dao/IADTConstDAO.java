@@ -18,4 +18,6 @@ public interface IADTConstDAO {
     List<ADTConst> findAll();
 
     String getADTConstValueByCode(ADTConstCode code);
+
+    List<ADTConst> getADTConstByName(String name);
 }

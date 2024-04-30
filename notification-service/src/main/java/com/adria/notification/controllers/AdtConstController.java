@@ -36,10 +36,16 @@ public class AdtConstController {
                 .body(adtConstService.getADTConstById(id));
     }
 
-    @GetMapping(value = "/all")
+    @GetMapping(value = "/findAll")
     public ResponseEntity<List<ADTConstResponseDTO>> findAll() {
         return ResponseEntity.ok()
                 .body(adtConstService.getAllADTConst());
+    }
+
+    @GetMapping(value = "/name/{name}")
+    public ResponseEntity<List<ADTConstResponseDTO>> findByProviderName(@PathVariable String name) {
+        return ResponseEntity.ok()
+                .body(adtConstService.getAllADTConstByName(name));
     }
 
 }

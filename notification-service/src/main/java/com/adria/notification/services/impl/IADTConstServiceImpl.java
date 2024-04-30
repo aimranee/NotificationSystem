@@ -54,4 +54,10 @@ public class IADTConstServiceImpl implements IADTConstService {
         return adtConstMapper.toListADTConstCodeDTO(adtConstList);
     }
 
+    @Override
+    public List<ADTConstResponseDTO> getAllADTConstByName(String name) {
+        List<ADTConst> adtConstList = adtConstDAO.getADTConstByName(name);
+        return adtConstMapper.toListADTConstDTO(adtConstList);
+    }
+
 }

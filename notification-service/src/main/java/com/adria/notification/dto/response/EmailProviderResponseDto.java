@@ -11,16 +11,17 @@ import java.util.UUID;
 @Component
 @AllArgsConstructor
 @NoArgsConstructor
-public class MailConfigResponseDto {
+public class EmailProviderResponseDto {
 
-    private UUID uuid;
-    private String protocol;
-    private boolean auth;
+    private UUID id;
+    private String name;
+    private String mailProtocol;
+    private boolean smtpAuth;
     private boolean starttlsEnable;
     private String sslTrust;
-    private String host;
-    private int port;
-    private String username;
-    private String password;
+    private String mailHost;
+    private String mailPort;
+    private String mailUsername;
+    private String mailPassword;
 
 }

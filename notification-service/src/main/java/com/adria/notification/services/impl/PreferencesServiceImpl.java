@@ -1,8 +1,8 @@
 package com.adria.notification.services.impl;
 
-import com.adria.notification.dao.IEventDao;
 import com.adria.notification.dao.IPreferencesDao;
 import com.adria.notification.dao.IRecipientDao;
+import com.adria.notification.dao.IEventDao;
 import com.adria.notification.dto.request.preferences.SavePreferencesRequestDto;
 import com.adria.notification.dto.response.preferences.GetPreferencesResponseDto;
 import com.adria.notification.dto.response.preferences.SavePreferencesResponseDto;
@@ -22,7 +22,7 @@ import java.util.List;
 public class PreferencesServiceImpl implements IPreferencesService {
 
     private final IPreferencesDao preferencesDao;
-    private final IEventDao eventDao;
+    private final IEventDao templateDao;
     private final IRecipientDao recipientDao;
     private final PreferencesMapper preferencesMapper;
 
@@ -30,11 +30,11 @@ public class PreferencesServiceImpl implements IPreferencesService {
     public List<SavePreferencesResponseDto> save(List<SavePreferencesRequestDto> preferencesDto) {
         List<Preferences> preferencesList = new ArrayList<>();
         for (SavePreferencesRequestDto preferenceDto : preferencesDto){
-            if(preferencesDao.existsByEventType(preferenceDto.getEventType())){
+            if(preferencesDao.existsByEventName(preferenceDto.getEventName())){
                 throw new RuntimeException("ErrorCode__EXISTS");
             }
             Preferences preferences = new Preferences();
-            preferences.setEvent(eventDao.findByType(preferenceDto.getEventType()));
+            preferences.setEvent(templateDao.findByEventName(preferenceDto.getEventName()));
             preferences.setRecipient(recipientDao.findByEmail(preferenceDto.getRecipientEmail()));
             preferencesList.add(preferences);
         }

@@ -10,9 +10,8 @@ import lombok.NoArgsConstructor;
 public class SaveADTConstRequestDTO {
 
     private String code;
-
+    private String name;
     private String value;
-
     private Boolean encrypted;
 
 }

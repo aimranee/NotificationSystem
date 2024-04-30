@@ -6,8 +6,6 @@ import javax.persistence.*;
 
 @Entity
 @Data
-@Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Recipient extends AbstractEntity{

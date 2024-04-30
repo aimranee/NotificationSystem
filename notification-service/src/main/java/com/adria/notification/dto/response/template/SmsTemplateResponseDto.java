@@ -1,18 +1,18 @@
-package com.adria.notification.dto.response;
+package com.adria.notification.dto.response.template;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.stereotype.Component;
-
 import java.util.UUID;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class EventResponseDto {
+public class SmsTemplateResponseDto {
     private UUID id;
+    private String message;
+    private String type;
+    private String description;
+    private String language;
     private String eventName;
-    private boolean editable;
-    private String notificationType;
 }

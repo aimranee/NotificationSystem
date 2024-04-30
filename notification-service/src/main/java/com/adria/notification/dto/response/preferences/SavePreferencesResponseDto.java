@@ -14,5 +14,5 @@ import java.util.UUID;
 public class SavePreferencesResponseDto {
     private UUID uuid;
     private String recipientEmail;
-    private String eventType;
+    private String eventName;
 }

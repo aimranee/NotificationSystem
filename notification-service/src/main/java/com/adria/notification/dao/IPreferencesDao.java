@@ -9,7 +9,7 @@ public interface IPreferencesDao {
     Preferences save (Preferences preferences);
     Preferences update (Preferences preferences);
     boolean delete (Preferences preferences);
-    boolean existsByEventType(String eventType);
+    boolean existsByEventName(String eventName);
     List<Preferences> saveAll(List<Preferences> preferences);
     List<Preferences> findAll();
 

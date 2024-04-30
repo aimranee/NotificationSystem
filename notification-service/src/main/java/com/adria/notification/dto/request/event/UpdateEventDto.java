@@ -1,4 +1,4 @@
-package com.adria.notification.dto.response.adtConsts;
+package com.adria.notification.dto.request.event;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,8 +9,7 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ADTConstCodeResponseDTO {
+public class UpdateEventDto {
     private UUID id;
-    private String name;
-    private String code;
+    private boolean editable;
 }

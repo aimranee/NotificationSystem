@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
 import java.util.UUID;
 
 @Data
@@ -12,10 +13,10 @@ import java.util.UUID;
 public class ADTConstResponseDTO {
 
     private UUID id;
-
     private String code;
-
+    private String name;
     private String value;
-
     private boolean encrypted;
+    private Date createdDate;
+    private Date modifiedDate;
 }

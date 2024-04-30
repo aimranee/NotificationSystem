@@ -6,6 +6,19 @@ spring:
       discovery:
         locator:
           enabled: true
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - PATCH
+            allowedHeaders: "*"
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin, RETAIN_FIRST
 
     consul:
       enabled: true
@@ -24,9 +37,3 @@ logging:
 
 server:
   port: 8888
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"

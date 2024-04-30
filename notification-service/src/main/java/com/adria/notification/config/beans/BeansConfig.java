@@ -16,7 +16,16 @@ public class BeansConfig {
     @Bean("secretKey")
     public ADTConst getSecretKey() {
 
-        return adtConstDao.findADTConstByCode(ADTConstCode.SECRET_KEY);
+        if (!adtConstDao.existsByCode(ADTConstCode.SECRET_KEY)) {
+            return adtConstDao.save(ADTConst
+                    .builder()
+                    .code(ADTConstCode.SECRET_KEY)
+                    .value("anNrc2xqdWhkbmVoeWRoag==")
+                    .name("AES")
+                    .build());
+        } else {
+            return adtConstDao.findADTConstByCode(ADTConstCode.SECRET_KEY);
+        }
     }
 
 }

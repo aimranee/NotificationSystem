@@ -1,6 +1,6 @@
 package com.adria.notification.dto.response.preferences;
 
-import com.adria.notification.dto.request.EventRequestDto;
+import com.adria.notification.dto.request.event.EventRequestDto;
 import com.adria.notification.dto.request.RecipientRequestDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;

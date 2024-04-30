@@ -34,7 +34,7 @@ public class EmailSenderUtils {
 
             messageHelper.setFrom(sender);
             messageHelper.setTo(notificationDto.getRecipientDto().getEmail());
-            messageHelper.setSubject(notificationDto.getEventDto().getSubject());
+//            messageHelper.setSubject(notificationDto.getEventDto().getSubject());
 
             Context context = new Context();
             context.setVariables(setVariablesOnEmailTemplate(notificationDto));
@@ -58,7 +58,7 @@ public class EmailSenderUtils {
 
             messageHelper.setFrom(sender);
             messageHelper.setTo(notificationDto.getRecipientDto().getEmail());
-            messageHelper.setSubject(notificationDto.getEventDto().getSubject());
+//            messageHelper.setSubject(notificationDto.getEventDto().getSubject());
 
             Context context = new Context();
             context.setVariables(setVariablesOnEmailTemplate(notificationDto));

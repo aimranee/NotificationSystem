@@ -11,5 +11,5 @@ import org.springframework.stereotype.Component;
 @Component
 public class PreferencesRequestDto {
     private String recipientEmail;
-    private String eventType;
+    private String eventName;
 }
