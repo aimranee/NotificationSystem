@@ -11,7 +11,5 @@ import java.util.UUID;
 @NoArgsConstructor
 public class UpdateEventDto {
     private UUID id;
-    private String name;
     private boolean editable;
-    private String notificationType;
 }
