@@ -15,7 +15,6 @@ public class Template extends AbstractEntity {
 
     private String subject;
     private String body;
-    private String type;
     private String description;
     private String message;
     private String language;

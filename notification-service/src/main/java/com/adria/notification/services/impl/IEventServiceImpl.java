@@ -56,4 +56,9 @@ public class IEventServiceImpl implements IEventService {
         Event event = eventDao.findById(id);
         return eventMapper.toResponseDto(event);
     }
+
+    @Override
+    public List<EventResponseDto> findByNotificationType(String notificationType) {
+        return eventMapper.toDtoList(eventDao.findByNotificationType(notificationType));
+    }
 }

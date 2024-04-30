@@ -41,6 +41,11 @@ public class IEventDaoImpl implements IEventDao {
     }
 
     @Override
+    public List<Event> findByNotificationType(String notificationType) {
+        return eventRepository.findByNotificationType(notificationType);
+    }
+
+    @Override
     public List<Event> findAll() {
         return eventRepository.findAll();
     }

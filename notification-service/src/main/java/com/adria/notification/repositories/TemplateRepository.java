@@ -8,8 +8,7 @@ import java.util.UUID;
 
 public interface TemplateRepository extends JpaRepository<Template, UUID>{
     Optional<Template> findById(UUID id);
-    Template findByType(String type);
-    boolean existsByType(String type);
     boolean existsById(UUID id);
-    List<Template> findAllByType(String type);
+    List<Template> findAllByEventNotificationType(String type);
+    Template findByEventName(String event);
 }

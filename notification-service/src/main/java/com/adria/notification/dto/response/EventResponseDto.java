@@ -14,4 +14,5 @@ public class EventResponseDto {
     private UUID id;
     private String name;
     private boolean editable;
+    private String notificationType;
 }

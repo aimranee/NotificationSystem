@@ -39,6 +39,11 @@ public class EventController {
         return ResponseEntity.ok().body(eventService.findById(id));
     }
 
+    @GetMapping("/find/{notificationType}")
+    public ResponseEntity<List<EventResponseDto>> findById(@PathVariable String notificationType){
+        return ResponseEntity.ok().body(eventService.findByNotificationType(notificationType));
+    }
+
     @GetMapping("/findAll")
     public ResponseEntity<List<EventResponseDto>> findAll(){
         return ResponseEntity.ok().body(eventService.findAll());

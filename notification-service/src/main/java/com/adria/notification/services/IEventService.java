@@ -15,4 +15,5 @@ public interface IEventService {
     List<EventResponseDto> findAll();
     EventResponseDto findByName(String name);
     EventResponseDto findById(UUID id);
+    List<EventResponseDto> findByNotificationType(String notificationType);
 }

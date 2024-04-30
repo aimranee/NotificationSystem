@@ -10,4 +10,5 @@ import lombok.NoArgsConstructor;
 public class EventRequestDto {
     private String name;
     private boolean editable;
+    private String notificationType;
 }

@@ -12,5 +12,6 @@ public interface IEventDao {
     void delete (Event event);
     Event findByName (String name);
     Event findById (UUID id);
+    List<Event> findByNotificationType (String notificationType);
     List<Event> findAll();
 }
