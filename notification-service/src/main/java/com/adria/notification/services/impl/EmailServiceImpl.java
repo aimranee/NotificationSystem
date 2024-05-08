@@ -1,23 +1,21 @@
 package com.adria.notification.services.impl;
 
+import com.adria.notification.dao.IEmailProviderDao;
 import com.adria.notification.dto.request.event.EventRequestDto;
-import com.adria.notification.dto.request.notification.NotificationDetailDto;
 import com.adria.notification.dto.request.notification.NotificationRequestDto;
 import com.adria.notification.dto.request.RecipientRequestDto;
+import com.adria.notification.dto.request.template.EmailTemplateRequestDto;
 import com.adria.notification.dto.response.NotificationResponseDto;
-import com.adria.notification.mappers.EventMapper;
+import com.adria.notification.mappers.EmailProviderMapper;
 import com.adria.notification.mappers.RecipientMapper;
-import com.adria.notification.dao.IEventDao;
-import com.adria.notification.models.entities.Event;
-import com.adria.notification.models.entities.Recipient;
 import com.adria.notification.services.INotificationService;
 import com.adria.notification.dao.IRecipientDao;
-import com.adria.notification.services.IOtpService;
+import com.adria.notification.services.IEventService;
 import com.adria.notification.utils.EmailSenderUtils;
 import com.adria.notification.utils.FileUtils;
 import com.adria.notification.utils.NotificationType;
+import com.adria.notification.utils.ValidationUtils;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailException;
@@ -30,39 +28,47 @@ import java.util.List;
 @RequiredArgsConstructor
 public class EmailServiceImpl implements INotificationService<NotificationResponseDto> {
 
-    @Value("${spring.mail.username}")
-    private String sender;
-
-    private final IEventDao eventService;
     private final IRecipientDao recipientService;
-    private final EventMapper eventMapper;
+    private final IEmailProviderDao providerService;
+    private final EmailProviderMapper providerMapper;
     private final RecipientMapper recipientMapper;
     private final EmailSenderUtils emailSenderUtils;
-    private final IOtpService otpService;
+    //    private final IOtpService otpService;
+    private final IEventService templateService;
 
     @Override
     public ResponseEntity<NotificationResponseDto> sendNotification(NotificationRequestDto requestDto) {
         NotificationResponseDto notificationResponseDto = new NotificationResponseDto();
-        NotificationDetailDto notificationDetailDto = new NotificationDetailDto();
+
         try {
-            EventRequestDto eventDto = eventMapper.toDto(eventService.findByName(requestDto.getEventName()));
-            RecipientRequestDto recipientDto = recipientMapper.toDto(recipientService.findByEmail(requestDto.getEmailRecipient()));
+
+            for (EventRequestDto eventRequestDto : requestDto.getEvent()){
+
+                EmailTemplateRequestDto templateDto = templateService.findByEventName(eventRequestDto.getEventName());
+                if (templateDto.getEmailProvider() == null) {
+                    templateDto.setEmailProvider(providerMapper.toDto(providerService.getEmailProviderByName("primary")));
+                }
+                RecipientRequestDto recipientDto = recipientMapper.toDto(recipientService.findByEmail(requestDto.getEmailRecipient()));
 //            if (recipient == null)
 //                recipient = recipientService.save(new RecipientRequestDto(requestDTO.getFirstName(), requestDTO.getLastName(), requestDTO.getEmailRecipient(), null, null));
 
-            if ("OTP".equals(requestDto.getEventName())){
-                String otp = otpService.generateRandomOtp(6);
-                String message = otpService.getOtpMessage(recipientDto.getEmail(), otp);
-                notificationDetailDto.setMessage(message);
-            }else{
-//                notificationDetailDto.setMessage(eventDto.getMessage());
-            }
+//            if ("OTP".equals(requestDto.getEventName())){
+//                String otp = otpService.generateRandomOtp(6);
+//                String message = otpService.getOtpMessage(recipientDto.getEmail(), otp);
+////                notificationDetailDto.setMessage(message);
+//            }else{
+////                notificationDetailDto.setMessage(eventDto.getMessage());
+//            }
+                if (!ValidationUtils.validateVariables(templateDto.getVariables(), eventRequestDto.getVariables())) {
 
-            notificationDetailDto.setRecipientDto(recipientDto);
-            notificationDetailDto.setEventDto(eventDto);
-            emailSenderUtils.emailSending(notificationDetailDto, sender);
+                    notificationResponseDto.setResult("Variables validation failed");
+                    return ResponseEntity.badRequest().body(notificationResponseDto);
+                }
+                emailSenderUtils.emailSending(templateDto, recipientDto.getEmail(), eventRequestDto.getVariables());
+            }
             notificationResponseDto.setResult("done");
             return ResponseEntity.ok(notificationResponseDto);
+
         } catch (MailException e) {
             notificationResponseDto.setResult("not done!");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(notificationResponseDto);
@@ -72,26 +78,36 @@ public class EmailServiceImpl implements INotificationService<NotificationRespon
     @Override
     public ResponseEntity<NotificationResponseDto> sendNotificationWithFiles(List<MultipartFile> files, NotificationRequestDto requestDto) {
         NotificationResponseDto notificationResponseDto = new NotificationResponseDto();
-        NotificationDetailDto notificationDetailDto = new NotificationDetailDto();
+
         try {
-            for (MultipartFile file : files)
-                FileUtils.isValid(file);
 
-            Event event = eventService.findByName(requestDto.getEventName());
-            Recipient recipient = recipientService.findByEmail(requestDto.getEmailRecipient());
-            notificationDetailDto.setEventDto(eventMapper.toDto(event));
-            notificationDetailDto.setRecipientDto(recipientMapper.toDto(recipient));
+            for (EventRequestDto eventRequestDto : requestDto.getEvent()){
 
-            if (requestDto.getEventName()=="OTP"){
-                String otp = otpService.generateRandomOtp(6);
-                String message = otpService.getOtpMessage(recipient.getEmail(), otp);
-                notificationDetailDto.setMessage(message);
-            }else{
-//                notificationDetailDto.setMessage(event.getMessage());
+                EmailTemplateRequestDto templateDto = templateService.findByEventName(eventRequestDto.getEventName());
+                for (MultipartFile file : files)
+                    FileUtils.isValid(file);
+                if (templateDto.getEmailProvider() == null) {
+                    templateDto.setEmailProvider(providerMapper.toDto(providerService.getEmailProviderByName("primary")));
+                }
+                RecipientRequestDto recipientDto = recipientMapper.toDto(recipientService.findByEmail(requestDto.getEmailRecipient()));
+
+//            if (requestDto.getEventName()=="OTP"){
+//                String otp = otpService.generateRandomOtp(6);
+//                String message = otpService.getOtpMessage(recipient.getEmail(), otp);
+////                notificationDetailDto.setMessage(message);
+//            }else{
+////                notificationDetailDto.setMessage(event.getMessage());
+//            }
+
+                if (!ValidationUtils.validateVariables(templateDto.getVariables(), eventRequestDto.getVariables())) {
+
+                    notificationResponseDto.setResult("Variables validation failed");
+                    return ResponseEntity.badRequest().body(notificationResponseDto);
+                }
+
+                emailSenderUtils.mailSendingWithAttachment(templateDto, recipientDto.getEmail(), files, eventRequestDto.getVariables());
             }
-
-            String result = emailSenderUtils.mailSendingWithAttachment(notificationDetailDto, sender, files);
-            notificationResponseDto.setResult(result);
+            notificationResponseDto.setResult("done");
             return ResponseEntity.ok(notificationResponseDto);
         } catch (MailException e) {
             notificationResponseDto.setResult("not done!");

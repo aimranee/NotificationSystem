@@ -1,18 +1,16 @@
 package com.adria.notification.utils;
 
+import com.adria.notification.dto.request.VariablesRequestDto;
 import com.adria.notification.dto.request.notification.NotificationDetailDto;
+import com.adria.notification.dto.request.template.EmailTemplateRequestDto;
 import com.adria.notification.exceptions.EmailSendingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
-import org.thymeleaf.spring5.SpringTemplateEngine;
-import org.thymeleaf.context.Context;
-
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,23 +21,21 @@ import java.util.Objects;
 public class EmailSenderUtils {
 
     private final JavaMailSender javaMailSender;
-    private final SpringTemplateEngine templateEngine;
 
-    public String emailSending(NotificationDetailDto notificationDto, String sender) {
+    public String emailSending(EmailTemplateRequestDto templateDto, String recipient, List<VariablesRequestDto> requestVariables){
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper messageHelper;
 
         try {
             messageHelper = new MimeMessageHelper(mimeMessage, true);
 
-            messageHelper.setFrom(sender);
-            messageHelper.setTo(notificationDto.getRecipientDto().getEmail());
-//            messageHelper.setSubject(notificationDto.getEventDto().getSubject());
+            messageHelper.setFrom(templateDto.getEmailProvider().getMailUsername());
+            messageHelper.setTo(recipient);
+            messageHelper.setSubject(templateDto.getSubject());
 
-            Context context = new Context();
-            context.setVariables(setVariablesOnEmailTemplate(notificationDto));
-            String htmlContent = templateEngine.process("emailTemplate", context);
-            messageHelper.setText(htmlContent, true);
+            Map<String, Object> templateVariables = setVariablesOnEmailTemplate(requestVariables);
+            String processedHtmlContent = processTemplate(templateDto.getEmailRenderedHtml(), templateVariables);
+            messageHelper.setText(processedHtmlContent, true);
 
             javaMailSender.send(mimeMessage);
 
@@ -49,26 +45,27 @@ public class EmailSenderUtils {
         }
     }
 
-    public String mailSendingWithAttachment(NotificationDetailDto notificationDto, String sender, List<MultipartFile> files) {
+
+    public String mailSendingWithAttachment(EmailTemplateRequestDto templateDto, String recipient, List<MultipartFile> files, List<VariablesRequestDto> requestVariables) {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper messageHelper;
 
         try {
             messageHelper = new MimeMessageHelper(mimeMessage, true);
 
-            messageHelper.setFrom(sender);
-            messageHelper.setTo(notificationDto.getRecipientDto().getEmail());
-//            messageHelper.setSubject(notificationDto.getEventDto().getSubject());
+            messageHelper.setFrom(templateDto.getEmailProvider().getMailUsername());
+            messageHelper.setTo(recipient);
+            messageHelper.setSubject(templateDto.getSubject());
 
-            Context context = new Context();
-            context.setVariables(setVariablesOnEmailTemplate(notificationDto));
-            String htmlContent = templateEngine.process("emailTemplate", context);
-            messageHelper.setText(htmlContent, true);
+            Map<String, Object> templateVariables = setVariablesOnEmailTemplate(requestVariables);
+            String processedHtmlContent = processTemplate(templateDto.getEmailRenderedHtml(), templateVariables);
+            messageHelper.setText(processedHtmlContent, true);
 
             for (MultipartFile file : files) {
                 String originalFilename = Objects.requireNonNull(file.getOriginalFilename());
                 messageHelper.addAttachment(originalFilename, file);
             }
+
 
             javaMailSender.send(mimeMessage);
 
@@ -78,15 +75,25 @@ public class EmailSenderUtils {
         }
     }
 
-    private Map<String, Object> setVariablesOnEmailTemplate(NotificationDetailDto notificationDto) {
+    private Map<String, Object> setVariablesOnEmailTemplate(List<VariablesRequestDto> requestVariables) {
         Map<String, Object> templateVariables = new HashMap<>();
-        templateVariables.put("recipientLastName", notificationDto.getRecipientDto().getLastName());
-        templateVariables.put("recipientFirstName", notificationDto.getRecipientDto().getFirstName());
-        templateVariables.put("requestId", 100);
-        templateVariables.put("requestDate", LocalDateTime.now());
-        templateVariables.put("senderName", "Adria Business & Technology");
-        templateVariables.put("message", notificationDto.getMessage());
+        for (VariablesRequestDto variable : requestVariables) {
+            String name = variable.getName();
+            String value = variable.getValue();
+            templateVariables.put(name, value);
+        }
         return templateVariables;
+    }
+
+    private String processTemplate(String htmlContent, Map<String, Object> variables) {
+        String processedContent = htmlContent;
+        for (Map.Entry<String, Object> entry : variables.entrySet()) {
+            String variableName = entry.getKey();
+            Object variableValue = entry.getValue();
+            String placeholder = "\\[\\[\\$\\{" + variableName + "\\}\\]\\]";
+            processedContent = processedContent.replaceAll(placeholder, variableValue.toString());
+        }
+        return processedContent;
     }
 
 

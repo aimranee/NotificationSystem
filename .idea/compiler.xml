@@ -7,6 +7,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="urlshortening-service" />
         <module name="serverDiscovery" />
         <module name="gateway-service" />
       </profile>
@@ -35,15 +36,13 @@
         <module name="notification-service" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel target="8">
-      <module name="notificationsystem (1)" target="1.8" />
-    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="configuration-service" options="-parameters" />
       <module name="gateway-service" options="-parameters" />
       <module name="notification-service" options="-parameters" />
+      <module name="urlshortening-service" options="-parameters" />
     </option>
   </component>
 </project>
