@@ -19,4 +19,5 @@ public class EmailTemplateResponseDto {
     private String emailRenderedHtml;
     private String eventName;
     private String emailProviderName;
+    private String variables;
 }

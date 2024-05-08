@@ -1,9 +1,8 @@
-package com.adria.notification.dto.response;
+package com.adria.notification.dto.response.event;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.stereotype.Component;
 
 import java.util.UUID;
 

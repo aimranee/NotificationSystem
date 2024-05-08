@@ -19,6 +19,7 @@ public class EmailTemplateRequestDto {
     private String language;
     private String emailMarkup;
     private String emailRenderedHtml;
+    private String variables;
     @Valid
     private EmailProviderResponseDto emailProvider;
 }

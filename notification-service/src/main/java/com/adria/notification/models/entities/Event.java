@@ -16,9 +16,9 @@ public class Event extends AbstractEntity {
     private boolean editable;
     private String notificationType;
     private String subject;
-    private String body;
     private String description;
     private String message;
+    private String variables;
     private String language;
     @Lob
     @Type (type = "org.hibernate.type.TextType")
