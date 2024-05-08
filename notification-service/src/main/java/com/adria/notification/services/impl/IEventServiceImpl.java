@@ -3,7 +3,7 @@ package com.adria.notification.services.impl;
 import com.adria.notification.dao.IEventDao;
 import com.adria.notification.dto.request.template.EmailTemplateRequestDto;
 //import com.adria.notification.dto.request.template.SmsTemplateRequestDto;
-import com.adria.notification.dto.response.EventResponseDto;
+import com.adria.notification.dto.response.event.EventResponseDto;
 import com.adria.notification.dto.response.template.EmailTemplateResponseDto;
 //import com.adria.notification.dto.response.template.SmsTemplateResponseDto;
 import com.adria.notification.mappers.EventMapper;
@@ -20,54 +20,59 @@ import java.util.UUID;
 @Transactional
 public class IEventServiceImpl implements IEventService {
 
-    private final IEventDao templateDao;
+    private final IEventDao eventDao;
     private final EventMapper eventMapper;
 
     @Override
     public EmailTemplateRequestDto saveEmail(EmailTemplateRequestDto emailTemplate) {
-        return eventMapper.toEmailTemplateDto(templateDao.saveEmail(emailTemplate));
+        return eventMapper.toEmailTemplateDto(eventDao.saveEmail(emailTemplate));
     }
 
 //    @Override
 //    public SmsTemplateRequestDto saveSms(SmsTemplateRequestDto smsTemplate) {
-//        return templateMapper.toSmsTemplateDto(templateDao.saveSms(smsTemplate));
+//        return templateMapper.toSmsTemplateDto(eventDao.saveSms(smsTemplate));
 //    }
 
     @Override
     public EmailTemplateRequestDto updateEmail(EmailTemplateRequestDto emailTemplate) {
-        return eventMapper.toEmailTemplateDto(templateDao.updateEmail(emailTemplate));
+        return eventMapper.toEmailTemplateDto(eventDao.updateEmail(emailTemplate));
     }
 
 //    @Override
 //    public SmsTemplateRequestDto updateSms(SmsTemplateRequestDto smsTemplate) {
-//        return templateMapper.toSmsTemplateDto(templateDao.updateSms(smsTemplate));
+//        return eventMapper.toSmsTemplateDto(eventDao.updateSms(smsTemplate));
 //    }
 
     @Override
     public void deleteEmail(EmailTemplateResponseDto emailTemplate) {
-        templateDao.deleteEmail(emailTemplate);
+        eventDao.deleteEmail(emailTemplate);
     }
 
 //    @Override
 //    public void deleteSms(SmsTemplateResponseDto smsTemplate) {
-//        templateDao.deleteSms(smsTemplate);
+//        eventDao.deleteSms(smsTemplate);
 //    }
 
     @Override
     public List<EmailTemplateResponseDto> findAllEmail(String type) {
-        return eventMapper.toEmailTemplateDtoList(templateDao.findAllByNotificationType(type));
+        return eventMapper.toEmailTemplateDtoList(eventDao.findAllByNotificationType(type));
     }
 
     @Override
     public EmailTemplateRequestDto findByEventName(String event) {
-        return eventMapper.toEmailTemplateDto(templateDao.findByEventName(event));
+        return eventMapper.toEmailTemplateDto(eventDao.findByEventName(event));
+    }
+
+    @Override
+    public EventResponseDto findByEventNameOnly(String event) {
+        return eventMapper.toEventResponseDto(eventDao.findByEventName(event));
     }
 
     @Override
     public EventResponseDto updateEditable(UUID id, boolean editable) {
-        int res = templateDao.updateEditable(id, editable);
+        int res = eventDao.updateEditable(id, editable);
         if (res==1){
-            return eventMapper.toEventResponseDto(templateDao.findById(id));
+            return eventMapper.toEventResponseDto(eventDao.findById(id));
         }else{
             return null;
         }
@@ -75,11 +80,11 @@ public class IEventServiceImpl implements IEventService {
 
     @Override
     public EventResponseDto findById(UUID id) {
-        return eventMapper.toEventResponseDto(templateDao.findById(id));
+        return eventMapper.toEventResponseDto(eventDao.findById(id));
     }
 
 //    @Override
 //    public List<SmsTemplateResponseDto> findAllSms(String type) {
-//        return templateMapper.toSmsTemplateDtoList(templateDao.findAllByType(type));
+//        return eventMapper.toSmsTemplateDtoList(eventDao.findAllByType(type));
 //    }
 }

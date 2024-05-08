@@ -1,6 +1,6 @@
 package com.adria.notification.dto.request.notification;
 
-import com.adria.notification.dto.request.EventRequestDto;
+import com.adria.notification.dto.request.event.EventRequestDto;
 import com.adria.notification.dto.request.RecipientRequestDto;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,7 +17,6 @@ public class NotificationDetailDto {
     private EventRequestDto eventDto;
     @Valid
     private RecipientRequestDto recipientDto;
-    private String message;
-    @NotBlank(message = "Le champ 'notificationType' ne doit pas être vide")
+    @NotBlank(message = "The 'notification Type' field must not be empty")
     private String notificationType;
 }

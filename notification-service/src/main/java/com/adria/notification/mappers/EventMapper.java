@@ -2,7 +2,7 @@ package com.adria.notification.mappers;
 
 import com.adria.notification.dto.request.template.EmailTemplateRequestDto;
 //import com.adria.notification.dto.request.template.SmsTemplateRequestDto;
-import com.adria.notification.dto.response.EventResponseDto;
+import com.adria.notification.dto.response.event.EventResponseDto;
 import com.adria.notification.dto.response.template.EmailTemplateResponseDto;
 //import com.adria.notification.dto.response.template.SmsTemplateResponseDto;
 import com.adria.notification.models.entities.Event;

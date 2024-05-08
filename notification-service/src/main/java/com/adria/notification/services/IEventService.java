@@ -2,7 +2,7 @@ package com.adria.notification.services;
 
 import com.adria.notification.dto.request.template.EmailTemplateRequestDto;
 //import com.adria.notification.dto.request.template.SmsTemplateRequestDto;
-import com.adria.notification.dto.response.EventResponseDto;
+import com.adria.notification.dto.response.event.EventResponseDto;
 import com.adria.notification.dto.response.template.EmailTemplateResponseDto;
 //import com.adria.notification.dto.response.template.SmsTemplateResponseDto;
 
@@ -20,6 +20,7 @@ public interface IEventService {
     List<EmailTemplateResponseDto> findAllEmail(String type);
 //    List<SmsTemplateResponseDto> findAllSms(String type);
     EmailTemplateRequestDto findByEventName(String event);
+    EventResponseDto findByEventNameOnly(String event);
     EventResponseDto updateEditable(UUID id, boolean editable);
     EventResponseDto findById(UUID id);
 }
