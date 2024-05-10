@@ -1,6 +1,7 @@
 package com.adria.notification.dto.request.template;
 
 import com.adria.notification.dto.response.EmailProviderResponseDto;
+import com.fasterxml.jackson.databind.JsonNode;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

@@ -1,9 +1,11 @@
 package com.adria.notification.utils;
 
+import com.adria.notification.dto.request.UrlRequestDto;
 import com.adria.notification.dto.request.VariablesRequestDto;
-import com.adria.notification.dto.request.notification.NotificationDetailDto;
 import com.adria.notification.dto.request.template.EmailTemplateRequestDto;
+import com.adria.notification.dto.response.UrlResponseDto;
 import com.adria.notification.exceptions.EmailSendingException;
+import com.adria.notification.services.IUrlService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -21,6 +23,7 @@ import java.util.Objects;
 public class EmailSenderUtils {
 
     private final JavaMailSender javaMailSender;
+    private final IUrlService urlService;
 
     public String emailSending(EmailTemplateRequestDto templateDto, String recipient, List<VariablesRequestDto> requestVariables){
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
@@ -87,14 +90,22 @@ public class EmailSenderUtils {
 
     private String processTemplate(String htmlContent, Map<String, Object> variables) {
         String processedContent = htmlContent;
+        String gatewayUrl = "http://localhost:8888/urlshortening-service/";
         for (Map.Entry<String, Object> entry : variables.entrySet()) {
             String variableName = entry.getKey();
             Object variableValue = entry.getValue();
             String placeholder = "\\[\\[\\$\\{" + variableName + "\\}\\]\\]";
-            processedContent = processedContent.replaceAll(placeholder, variableValue.toString());
+            if (ValidationUtils.isLink(variableValue.toString())) {
+                UrlRequestDto urlRequestDto = new UrlRequestDto(variableValue.toString());
+                UrlResponseDto urlResponseDto = urlService.generateShortLink(urlRequestDto).getBody();
+                String fullLink = gatewayUrl + urlResponseDto.getShortLink();
+                String anchorTag = "<a href=\"" + fullLink + "\">" + fullLink + "</a>";
+                processedContent = processedContent.replaceAll(placeholder, anchorTag);
+            } else {
+                processedContent = processedContent.replaceAll(placeholder, variableValue.toString());
+            }
         }
         return processedContent;
     }
-
 
 }
