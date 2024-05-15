@@ -4,6 +4,28 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+# Compiled class file
+*.class
+
+# Log files
+log/
+*.log
+
+# IntelliJ IDEA project files
+.idea/
+
+target/
+mvnw
+mvnw.cmd
+.mvn/
+
+# Gradle specific files
+build/
+.gradle/
+
+# Spring Boot devtools properties
+spring-boot-devtools.log
+
 ### STS ###
 .apt_generated
 .classpath
