@@ -58,3 +58,12 @@ logging:
 
 server:
   port: 8888
+
+keycloak:
+  serverUrl: http://localhost:8090
+  clientId: admin-cli
+  realm: master
+
+app:
+  api:
+    allowed-origins: "*"
