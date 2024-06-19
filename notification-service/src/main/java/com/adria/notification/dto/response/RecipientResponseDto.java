@@ -9,9 +9,6 @@ import java.util.UUID;
 @Component
 public class RecipientResponseDto {
     private UUID id;
-    private String firstName;
-    private String lastName;
     private String email;
     private String phone;
-    private String token;
 }

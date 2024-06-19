@@ -12,6 +12,7 @@ import java.util.UUID;
 public interface IEventDao {
     int updateEditable(UUID id, boolean editable);
     Event findById(UUID id);
+    List<Event> findAllEventNames();
     Event saveEmail(EmailTemplateRequestDto emailTemplate);
 //    Template saveSms(SmsTemplateRequestDto smsTemplate);
     Event updateEmail(EmailTemplateRequestDto emailTemplate);

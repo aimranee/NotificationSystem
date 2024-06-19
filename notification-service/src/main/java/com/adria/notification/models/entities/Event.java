@@ -18,6 +18,8 @@ public class Event extends AbstractEntity {
     private String subject;
     private String description;
     private String message;
+    @Lob
+    @Type (type = "org.hibernate.type.TextType")
     private String variables;
     private String language;
     @Lob

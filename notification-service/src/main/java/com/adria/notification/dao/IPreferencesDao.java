@@ -12,5 +12,7 @@ public interface IPreferencesDao {
     boolean existsByEventName(String eventName);
     List<Preferences> saveAll(List<Preferences> preferences);
     List<Preferences> findAll();
+    List<Preferences> findByRecipientEmail(String recipientEmail);
+    void deleteByRecipientEmail(String recipientEmail);
 
 }

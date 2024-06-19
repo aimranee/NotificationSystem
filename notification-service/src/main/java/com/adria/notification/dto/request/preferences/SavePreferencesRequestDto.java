@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import javax.validation.constraints.NotBlank;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -14,6 +15,5 @@ import javax.validation.constraints.NotBlank;
 public class SavePreferencesRequestDto {
     @NotBlank
     private String recipientEmail;
-    @NotBlank
-    private String eventName;
+    private List<String> eventNames;
 }

@@ -32,6 +32,11 @@ public class IEventDaoImpl implements IEventDao {
     }
 
     @Override
+    public List<Event> findAllEventNames() {
+        return eventRepository.findAll();
+    }
+
+    @Override
     public Event saveEmail(EmailTemplateRequestDto emailTemplate) {
         return eventRepository.save(eventMapper.toEmailTemplateEntity(emailTemplate));
     }

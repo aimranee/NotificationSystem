@@ -44,4 +44,14 @@ public class IPreferencesDaoImpl implements IPreferencesDao {
         return preferencesRepository.findAll();
     }
 
+    @Override
+    public List<Preferences> findByRecipientEmail(String recipientEmail) {
+        return preferencesRepository.findByRecipient_Email(recipientEmail);
+    }
+
+    @Override
+    public void deleteByRecipientEmail(String recipientEmail) {
+        preferencesRepository.deleteByRecipientEmail(recipientEmail);
+    }
+
 }

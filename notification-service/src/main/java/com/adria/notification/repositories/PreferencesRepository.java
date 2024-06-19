@@ -10,5 +10,7 @@ import java.util.List;
 public interface PreferencesRepository extends JpaRepository<Preferences,Long> {
     boolean existsByEventEventName(String eventName);
     List<Preferences> findAll();
+    List<Preferences> findByRecipient_Email(String recipientEmail);
+    void deleteByRecipientEmail(String recipientEmail);
 
 }

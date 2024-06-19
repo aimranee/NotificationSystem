@@ -57,7 +57,7 @@ public class AuthController {
     }
 
     @PostMapping("/refresh-token")
-    public ResponseEntity<String> refreshToken(@RequestBody RefreshToken refreshToken) {
+    public ResponseEntity<?> refreshToken(@RequestBody RefreshToken refreshToken) {
         String responseToken = null;
         try {
             List<NameValuePair> urlParameters = new ArrayList<>();

@@ -1,10 +1,9 @@
 package com.adria.notification.mappers;
 
+import com.adria.notification.dto.response.event.EventSimpleResponseDto;
 import com.adria.notification.dto.request.template.EmailTemplateRequestDto;
-//import com.adria.notification.dto.request.template.SmsTemplateRequestDto;
 import com.adria.notification.dto.response.event.EventResponseDto;
 import com.adria.notification.dto.response.template.EmailTemplateResponseDto;
-//import com.adria.notification.dto.response.template.SmsTemplateResponseDto;
 import com.adria.notification.models.entities.Event;
 import org.mapstruct.Builder;
 import org.mapstruct.Mapper;
@@ -21,6 +20,7 @@ public interface EventMapper {
     EmailTemplateResponseDto templateToEmailTemplateResponseDto(Event event);
 
     EventResponseDto toEventResponseDto(Event event);
+    EventSimpleResponseDto toEventDto(Event event);
 
 //    @Mapping(target = "eventName", source = "event.name")
 //    @Mapping(target = "emailProviderName", source = "emailProvider.name")
@@ -39,6 +39,7 @@ public interface EventMapper {
 //    @Mapping(source = "emailProviderName", target = "emailProvider.name")
 //    Template toSmsTemplateEntity(SmsTemplateResponseDto templateDto);
 
+    List<EventSimpleResponseDto> toEventReponseDtoList(List<Event> events);
     List<EmailTemplateResponseDto> toEmailTemplateDtoList(List<Event> events);
 //    List<SmsTemplateResponseDto> toSmsTemplateDtoList(List<Template> templates);
 

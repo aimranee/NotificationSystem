@@ -1,6 +1,5 @@
 package com.adria.notification.dto.response.preferences;
 
-import com.adria.notification.dto.request.event.EventSimpleRequestDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,9 +11,7 @@ import javax.validation.Valid;
 @AllArgsConstructor
 @NoArgsConstructor
 @Component
-public class GetPreferencesResponseDto {
-    @Valid
-    private EventSimpleRequestDto event;
-    @Valid
-    private EventSimpleRequestDto recipient;
+public class PreferencesResponseDto {
+    private String eventName;
+    private String recipientEmail;
 }

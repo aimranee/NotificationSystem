@@ -50,4 +50,9 @@ public class IRecipientDaoImpl implements IRecipientDao {
         }
         return recipientRepository.findByEmail(email);
     }
+
+    @Override
+    public boolean existsByEmail(String email) {
+        return recipientRepository.existsByEmail(email);
+    }
 }

@@ -11,5 +11,6 @@ public interface IRecipientDao {
     Recipient findByEmail (String email);
 
     Recipient findByPhone (String email);
+    boolean existsByEmail (String email);
 
 }

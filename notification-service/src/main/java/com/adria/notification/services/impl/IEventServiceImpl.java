@@ -1,6 +1,7 @@
 package com.adria.notification.services.impl;
 
 import com.adria.notification.dao.IEventDao;
+import com.adria.notification.dto.response.event.EventSimpleResponseDto;
 import com.adria.notification.dto.request.template.EmailTemplateRequestDto;
 //import com.adria.notification.dto.request.template.SmsTemplateRequestDto;
 import com.adria.notification.dto.response.event.EventResponseDto;
@@ -56,6 +57,11 @@ public class IEventServiceImpl implements IEventService {
     @Override
     public List<EmailTemplateResponseDto> findAllEmail(String type) {
         return eventMapper.toEmailTemplateDtoList(eventDao.findAllByNotificationType(type));
+    }
+
+    @Override
+    public List<EventSimpleResponseDto> findAllEventNames() {
+        return eventMapper.toEventReponseDtoList(eventDao.findAllEventNames());
     }
 
     @Override

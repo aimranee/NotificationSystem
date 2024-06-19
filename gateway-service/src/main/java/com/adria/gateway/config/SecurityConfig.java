@@ -15,11 +15,22 @@ public class SecurityConfig {
     @Bean
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity serverHttpSecurity) throws Exception {
         return serverHttpSecurity
-                .csrf().disable()
-                .cors().and()
-                .authorizeExchange().pathMatchers("/actuator/health/**", "/login", "/refresh-token").permitAll()
-                .pathMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                .anyExchange().authenticated()
+                .csrf()
+                .disable()
+                .cors()
+                .and()
+                .authorizeExchange()
+                .pathMatchers(
+                        "/actuator/health/**",
+                        "/login",
+                        "/urlshortening-service/**",
+                        "/notification-service/api/event/findAllEventNames",
+                        "/notification-service/api/preferences/**")
+                .permitAll()
+                .pathMatchers(HttpMethod.OPTIONS, "/**")
+                .permitAll()
+                .anyExchange()
+                .authenticated()
                 .and()
                 .oauth2ResourceServer(oauth2 -> oauth2
                         .jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())))
