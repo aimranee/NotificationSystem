@@ -1,43 +1,57 @@
 package com.adria.keycloakManagement.controller;
 
-import com.adria.keycloakManagement.dto.ClientDTO;
-import com.adria.keycloakManagement.model.UserCredentials;
+import com.adria.keycloakManagement.dto.ClientAppDTO;
+import com.adria.keycloakManagement.dto.ClientCredentialsDto;
+import com.adria.keycloakManagement.dto.CreateClientAppDto;
+import com.adria.keycloakManagement.dto.UserCredentialsDto;
+import com.adria.keycloakManagement.dto.response.ClientResponseDTO;
+import com.adria.keycloakManagement.dto.response.TokenResponseDTO;
 import com.adria.keycloakManagement.service.KeycloakService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 import org.keycloak.representations.idm.ClientRepresentation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.*;
 
 @RestController
 @RequestMapping(value = "/keycloak")
 @RequiredArgsConstructor
 public class KeycloakController {
 
-    private final KeycloakService keyClockService;
+    private final KeycloakService keyclockService;
 
     /*
      * Get token for the first time when user log in. We need to pass
      * credentials only once. Later communication will be done by sending token.
      */
 
-    @RequestMapping(value = "/token", method = RequestMethod.POST)
-    public ResponseEntity<?> getTokenUsingCredentials(@RequestBody UserCredentials userCredentials) {
+    @RequestMapping(value = "/login/client", method = RequestMethod.POST)
+    public ResponseEntity<?> getTokenUsingCredentials(@RequestBody ClientCredentialsDto clientCredentials) {
 
-        String responseToken = null;
+        String responseToken;
         try {
-
-            responseToken = keyClockService.getToken(userCredentials);
-
+            responseToken = keyclockService.getTokenClient(clientCredentials);
         } catch (Exception e) {
-
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-
         return new ResponseEntity<>(responseToken, HttpStatus.OK);
+    }
 
+    @PostMapping("/login/admin")
+    public ResponseEntity<?> loginAdmin(@RequestBody UserCredentialsDto userCredentials) {
+
+        String responseToken;
+        try {
+            responseToken = keyclockService.getTokenUser(userCredentials);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(responseToken, HttpStatus.OK);
     }
 
     /*
@@ -46,32 +60,42 @@ public class KeycloakController {
      * client cookie with updated refresh and access token
      */
 
-    @RequestMapping(value = "/refreshtoken", method = RequestMethod.GET)
-    public ResponseEntity<?> getTokenUsingRefreshToken(@RequestHeader(value = "Authorization") String refreshToken) {
+//    @RequestMapping(value = "/refreshtoken", method = RequestMethod.GET)
+//    public ResponseEntity<?> getTokenUsingRefreshToken(@RequestHeader(value = "Authorization") String refreshToken) {
+//
+//        String responseToken = null;
+//        try {
+//
+//            responseToken = keyclockService.getByRefreshToken(refreshToken);
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+//        }
+//
+//        return new ResponseEntity<>(responseToken, HttpStatus.OK);
+//
+//    }
 
-        String responseToken = null;
-        try {
-
-            responseToken = keyClockService.getByRefreshToken(refreshToken);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-
-        return new ResponseEntity<>(responseToken, HttpStatus.OK);
-
+    @GetMapping(value = "/findAll")
+    public List<ClientResponseDTO> getClients() {
+        return keyclockService.getClientsApp();
     }
 
-    @RequestMapping(value = "/findAll", method = RequestMethod.GET)
-    public List<ClientRepresentation> getClients() {
-        return keyClockService.getClients();
+    @GetMapping(value = "/find/{clientId}")
+    public ClientResponseDTO getClientByClientId(@PathVariable String clientId) {
+        return keyclockService.getClientAppByClientId(clientId);
     }
 
-    @PostMapping("/saveClient")
-    public ResponseEntity<?> saveClient(@RequestBody ClientDTO clientDTO) {
+    @GetMapping(value = "/findById/{appId}")
+    public ClientResponseDTO getClientByKeycloakId(@PathVariable String appId) {
+        return keyclockService.getClientAppByKeycloakId(appId);
+    }
+
+    @PostMapping("/saveClientApp")
+    public ResponseEntity<?> saveClient(@RequestBody CreateClientAppDto clientAppDTO) {
         try {
-            keyClockService.createClient(clientDTO);
+            keyclockService.createClientApp(clientAppDTO);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception ex) {
 
@@ -80,11 +104,9 @@ public class KeycloakController {
         }
     }
 
-    @PostMapping("/clientsave")
-    public ResponseEntity<String> createClient(@RequestBody ClientDTO clientDTO) {
-        // Replace "your_token_value" with the actual token
-        keyClockService.createClient(clientDTO);
-        return ResponseEntity.ok("Client created successfully");
+    @GetMapping("/findById/{id}")
+    public ClientResponseDTO getClientById(@PathVariable UUID id) {
+        return keyclockService.getClientAppById(id);
     }
 
     /*
@@ -107,5 +129,25 @@ public class KeycloakController {
 //        }
 //
 //    }
+
+    @DeleteMapping("/delete/{clientId}")
+    public ResponseEntity<String> deleteKeycloakClient(@PathVariable String clientId) {
+        try {
+            keyclockService.deleteClient(clientId);
+            return ResponseEntity.ok("Client " + clientId + " deleted successfully.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to delete client " + clientId + ": " + e.getMessage());
+        }
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<String> updateKeycloakClient(@RequestBody ClientAppDTO updatedClient) {
+        try {
+            keyclockService.updateClient(updatedClient);
+            return ResponseEntity.ok("Client " + updatedClient.getClientId() + " updated successfully.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update client " + updatedClient.getClientId() + ": " + e.getMessage());
+        }
+    }
 
 }

@@ -1,24 +1,39 @@
 package com.adria.keycloakManagement.service;
 
-import com.adria.keycloakManagement.dto.ClientDTO;
+import com.adria.keycloakManagement.dto.ClientAppDTO;
+import com.adria.keycloakManagement.dto.ClientCredentialsDto;
+import com.adria.keycloakManagement.dto.CreateClientAppDto;
+import com.adria.keycloakManagement.dto.UserCredentialsDto;
 import com.adria.keycloakManagement.dto.response.ClientResponseDTO;
-import com.adria.keycloakManagement.model.UserCredentials;
 import org.keycloak.representations.idm.ClientRepresentation;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface KeycloakService {
 
-    String getToken(UserCredentials userCredentials);
+    String getTokenClient(ClientCredentialsDto clientCredentials);
 
-    ClientResponseDTO createClient(ClientDTO clientDTO);
+    String getTokenUser(UserCredentialsDto userCredentials);
 
-    List<ClientRepresentation> getClients();
+    ClientResponseDTO createClientApp(CreateClientAppDto clientAppDTO);
 
-    String getByRefreshToken(String refreshToken);
+    ClientResponseDTO getClientAppByClientId(String clientId);
+
+    ClientResponseDTO getClientAppByKeycloakId(String appId);
+
+    List<ClientResponseDTO> getClientsApp();
+
+    ClientResponseDTO getClientAppById(UUID id);
+
+//    String getByRefreshToken(String refreshToken);
 
     void logoutUser(String userId);
 
     void resetPassword(String newPassword, String userId);
+
+    void deleteClient(String clientId);
+
+    void updateClient(ClientAppDTO clientAppDTO);
 
 }

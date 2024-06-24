@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
 import java.util.UUID;
 
 @Data
@@ -14,5 +15,8 @@ public class ClientResponseDTO {
     private String clientId;
     private String name;
     private String clientSecret;
+    private String clientKeycloakId;
+    private Date createdDate;
+    private Date modifiedDate;
     private boolean enabled;
 }

@@ -1,13 +1,17 @@
 package com.adria.keycloakManagement.mapper;
 
-import com.adria.keycloakManagement.dto.ClientDTO;
+import com.adria.keycloakManagement.dto.ClientAppDTO;
 import com.adria.keycloakManagement.dto.response.ClientResponseDTO;
-import com.adria.keycloakManagement.model.Client;
+import com.adria.keycloakManagement.model.ClientApp;
 import org.mapstruct.Builder;
 import org.mapstruct.Mapper;
 
+import java.util.List;
+
 @Mapper(builder = @Builder(disableBuilder = true), componentModel = "spring")
 public interface ClientMapper {
-    Client toEntity(ClientDTO clientDto);
-    ClientResponseDTO toResponseDto(Client client);
+    ClientApp toEntity(ClientAppDTO clientAppDto);
+    ClientApp toResponseEntity(ClientResponseDTO clientResponseDto);
+    ClientResponseDTO toResponseDto(ClientApp clientApp);
+    List<ClientResponseDTO> toResponseDtoList(List<ClientApp> clientApps);
 }

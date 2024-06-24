@@ -11,11 +11,11 @@ import javax.persistence.Entity;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Client extends AbstractEntity{
-
+public class ClientApp extends AbstractEntity{
     @Column(unique = true)
     private String clientId;
     private String name;
     private String clientSecret;
+    private String clientKeycloakId;
     private boolean enabled;
 }

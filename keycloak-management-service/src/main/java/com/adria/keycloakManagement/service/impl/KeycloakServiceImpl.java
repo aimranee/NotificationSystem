@@ -1,11 +1,14 @@
 package com.adria.keycloakManagement.service.impl;
 
 import com.adria.keycloakManagement.dao.ClientDao;
-import com.adria.keycloakManagement.dto.ClientDTO;
+import com.adria.keycloakManagement.dto.*;
 import com.adria.keycloakManagement.dto.response.ClientResponseDTO;
 import com.adria.keycloakManagement.mapper.ClientMapper;
-import com.adria.keycloakManagement.model.UserCredentials;
 import com.adria.keycloakManagement.service.KeycloakService;
+import com.adria.keycloakManagement.service.ProviderService;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.JsonObject;
 import lombok.RequiredArgsConstructor;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -33,6 +36,7 @@ import java.io.InputStreamReader;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Component
 @Service
@@ -64,7 +68,30 @@ public class KeycloakServiceImpl implements KeycloakService {
         return KeycloakBuilder.builder().serverUrl(SERVER_URL).realm("master").username(USERNAME).password(PASSWORD).clientId(CLIENT_ID).build();
     }
 
-    public String getToken(UserCredentials userCredentials) {
+    public String getTokenClient(ClientCredentialsDto clientCredentials) {
+
+        String responseToken = null;
+        try {
+
+            String clientId = clientCredentials.getClientId();
+            String clientSecret = clientCredentials.getClientSecret();
+
+            List<NameValuePair> urlParameters = new ArrayList<>();
+            urlParameters.add(new BasicNameValuePair("grant_type", "client_credentials"));
+            urlParameters.add(new BasicNameValuePair("client_id", clientId));
+            urlParameters.add(new BasicNameValuePair("client_secret", clientSecret));
+
+            responseToken = sendPostClient(urlParameters);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return responseToken;
+
+    }
+
+    public String getTokenUser(UserCredentialsDto userCredentials) {
 
         String responseToken = null;
         try {
@@ -78,7 +105,7 @@ public class KeycloakServiceImpl implements KeycloakService {
             urlParameters.add(new BasicNameValuePair("username", username));
             urlParameters.add(new BasicNameValuePair("password", password));
 
-            responseToken = sendPost(urlParameters);
+            responseToken = sendPostUser(urlParameters);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -89,8 +116,10 @@ public class KeycloakServiceImpl implements KeycloakService {
     }
 
     @Override
-    public ClientResponseDTO createClient(ClientDTO clientDTO) {
+    public ClientResponseDTO createClientApp(CreateClientAppDto clientAppDTO) {
         ClientResponseDTO clientResponseDTO = new ClientResponseDTO();
+        ClientAppDTO clientRequestDTO = new ClientAppDTO();
+        ProviderService providerService = null;
 
         try {
 
@@ -103,9 +132,9 @@ public class KeycloakServiceImpl implements KeycloakService {
             ClientsResource clientsResource = realmResource.clients();
 
             ClientRepresentation client = new ClientRepresentation();
-            client.setClientId(clientDTO.getClientId());
-            client.setName(clientDTO.getName());
-            client.setEnabled(clientDTO.isEnabled());
+            client.setClientId(clientAppDTO.getClientId());
+            client.setName(clientAppDTO.getName());
+            client.setEnabled(clientAppDTO.isEnabled());
             client.setServiceAccountsEnabled(true);
             // Create the client
             Response response = clientsResource.create(client);
@@ -115,10 +144,12 @@ public class KeycloakServiceImpl implements KeycloakService {
                 URI location = response.getLocation();
                 String clientId = location.getPath().substring(location.getPath().lastIndexOf('/') + 1);
                 ClientResource res = clientsResource.get(clientId);
-                clientDTO.setClientSecret(res.getSecret().getValue());
-
-                clientResponseDTO = clientMapper.toResponseDto(clientDao.createClient(clientMapper.toEntity(clientDTO)));
-
+                clientRequestDTO.setClientId(clientAppDTO.getClientId());
+                clientRequestDTO.setName(clientAppDTO.getName());
+                clientRequestDTO.setEnabled(clientAppDTO.isEnabled());
+                clientRequestDTO.setClientKeycloakId(clientId);
+                clientRequestDTO.setClientSecret(res.getSecret().getValue());
+                clientResponseDTO = clientMapper.toResponseDto(clientDao.createClient(clientMapper.toEntity(clientRequestDTO)));
             } else {
                 System.err.println("Failed to create client. Status code: " + response.getStatus());
             }
@@ -129,25 +160,25 @@ public class KeycloakServiceImpl implements KeycloakService {
         return clientResponseDTO;
     }
 
-    @Override
-    public String getByRefreshToken(String refreshToken) {
-
-        String responseToken = null;
-        try {
-
-            List<NameValuePair> urlParameters = new ArrayList<NameValuePair>();
-            urlParameters.add(new BasicNameValuePair("grant_type", "refresh_token"));
-            urlParameters.add(new BasicNameValuePair("client_id", CLIENT_ID));
-            urlParameters.add(new BasicNameValuePair("refresh_token", refreshToken));
-
-            responseToken = sendPost(urlParameters);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return responseToken;
-    }
+//    @Override
+//    public String getByRefreshToken(String refreshToken) {
+//
+//        String responseToken = null;
+//        try {
+//
+//            List<NameValuePair> urlParameters = new ArrayList<NameValuePair>();
+//            urlParameters.add(new BasicNameValuePair("grant_type", "refresh_token"));
+//            urlParameters.add(new BasicNameValuePair("client_id", CLIENT_ID));
+//            urlParameters.add(new BasicNameValuePair("refresh_token", refreshToken));
+//
+//            responseToken = sendPost(urlParameters);
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//        return responseToken;
+//    }
 
     public void logoutUser(String userId) {
 
@@ -190,29 +221,67 @@ public class KeycloakServiceImpl implements KeycloakService {
         return realmResource;
     }
 
-    public List<ClientRepresentation> getClients() {
-//        Keycloak keycloak = KeycloakBuilder.builder()
-//                .serverUrl(SERVER_URL)
-//                .realm("master")
-//                .clientId(CLIENT_ID)
-//                .clientSecret(CLIENT_SECRET)
-//                .authorization("eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJObERpbzJDQk9CTWc2YVZJVjVxZFVPWUw3Y2p0VDNCWHg2NDlNQnVmM2RjIn0.eyJleHAiOjE3MTU3NjY3NDcsImlhdCI6MTcxNTc2NjY4NywianRpIjoiMjQ1Y2QwNzktYTlmOC00YTg4LTg4NWYtNTkwNmY0ZjI2M2IxIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDkwL3JlYWxtcy9tYXN0ZXIiLCJzdWIiOiJhMzA2MWIzZi00YTA0LTQ3MjAtOTg1MC04MmU3MjJjZjJkNmEiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJhZG1pbi1jbGkiLCJzZXNzaW9uX3N0YXRlIjoiZDY2YWRiMjgtZDJmZi00NDk2LWEyYjctYjU3YzU0NmE1MTA3IiwiYWNyIjoiMSIsInNjb3BlIjoib3BlbmlkIHByb2ZpbGUgZW1haWwiLCJzaWQiOiJkNjZhZGIyOC1kMmZmLTQ0OTYtYTJiNy1iNTdjNTQ2YTUxMDciLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsIm5hbWUiOiJhaW1yYW5lIGVzc2FraGkiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJhZG1pbiIsImdpdmVuX25hbWUiOiJhaW1yYW5lIiwiZmFtaWx5X25hbWUiOiJlc3Nha2hpIiwiZW1haWwiOiJhaW1yYW5lMjAwMkBnbWFpbC5jb20ifQ.AU-gSXha_xrjUIGakXviOIlVvkVkSsRpb15T1lzkFwADGsG-NTXBLvtzbwvysl7AhqkVJ2lsvYVXqc-do2CaaqaE3qYjpZsmjWGA9l7QPIM_-iy0YKgt0O_pp1Lxcs2OMeXp1OOsXlCTGCKvUKvE2z04LxJPP2efgzdjbQnaUGO5qtxVRhUbxxDV2NXbnYft4x_eHtMHzOnEY0bHEpTcnPLHQdZ-O9fN92EM6d_WF1aRmjCWEStOOO6P9-ywt-fmPs0GnzC832e5noFmupCyQjYlqJh-KbPYZys-sYBdYC18QYc0uQtU0HMwVOK6MpJe4lenXJ2wWIA-bhWQIywxww")
-//                .build();
-//
+    public List<ClientResponseDTO> getClientsApp() {
+
+//        Keycloak keycloak = KeycloakBuilder.builder().serverUrl(SERVER_URL).grantType("password").realm("master").clientId(CLIENT_ID).username(USERNAME).password(PASSWORD).resteasyClient(new ResteasyClientBuilder().connectionPoolSize(10).build()).build();
+
+//        keycloak.tokenManager().getAccessToken();
 //        RealmResource realmResource = keycloak.realm("master");
-//        ClientsResource clientsResource = realmResource.clients();
-//
-//        // Retrieve the list of clients
-//        return clientsResource.findAll();
-
-        Keycloak keycloak = KeycloakBuilder.builder().serverUrl(SERVER_URL).grantType("password").realm("master").clientId(CLIENT_ID).username(USERNAME).password(PASSWORD).resteasyClient(new ResteasyClientBuilder().connectionPoolSize(10).build()).build();
-
-        keycloak.tokenManager().getAccessToken();
-        RealmResource realmResource = keycloak.realm("master");
-        return realmResource.clients().findAll();
+//        return realmResource.clients().findAll();
+        return clientMapper.toResponseDtoList(clientDao.getAllClients());
     }
 
-    private String sendPost(List<NameValuePair> urlParameters) throws Exception {
+    @Override
+    public ClientResponseDTO getClientAppById(UUID id) {
+        return clientMapper.toResponseDto(clientDao.getClientById(id));
+    }
+
+    public ClientResponseDTO getClientAppByClientId(String clientId) {
+        return clientMapper.toResponseDto(clientDao.getClientByClientId(clientId));
+    }
+
+    public ClientResponseDTO getClientAppByKeycloakId(String appId) {
+        return clientMapper.toResponseDto(clientDao.getClientByKeycloakId(appId));
+    }
+
+    private String sendPostUser(List<NameValuePair> urlParameters) throws Exception {
+
+        HttpClient client = HttpClientBuilder.create().build();
+        HttpPost post = new HttpPost(SERVER_URL + "/realms/" + REALM + "/protocol/openid-connect/token");
+        post.setEntity(new UrlEncodedFormEntity(urlParameters));
+
+        post.setEntity(new UrlEncodedFormEntity(urlParameters));
+        post.setHeader("Content-Type", "application/x-www-form-urlencoded");
+
+        HttpResponse response = client.execute(post);
+
+        BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+
+        StringBuffer result = new StringBuffer();
+        String line;
+        while ((line = rd.readLine()) != null) {
+            result.append(line);
+        }
+
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode rootNode = mapper.readTree(result.toString());
+
+        String accessToken = rootNode.path("access_token").asText();
+        String scope = rootNode.path("scope").asText();
+        int expiresIn = rootNode.path("expires_in").asInt();
+        String tokenType = rootNode.path("token_type").asText();
+
+        JsonObject responseObject = new JsonObject();
+        responseObject.addProperty("access_token", accessToken);
+        responseObject.addProperty("scope", scope);
+        responseObject.addProperty("expires_in", expiresIn);
+        responseObject.addProperty("token_type", tokenType);
+        responseObject.addProperty("role", "admin");
+        return responseObject.toString();
+
+    }
+
+    private String sendPostClient(List<NameValuePair> urlParameters) throws Exception {
 
         HttpClient client = HttpClientBuilder.create().build();
         HttpPost post = new HttpPost(SERVER_URL + "/realms/" + REALM + "/protocol/openid-connect/token");
@@ -224,12 +293,80 @@ public class KeycloakServiceImpl implements KeycloakService {
         BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
 
         StringBuffer result = new StringBuffer();
-        String line = "";
+        String line;
         while ((line = rd.readLine()) != null) {
             result.append(line);
         }
 
-        return result.toString();
+        String clientId = null;
+        for (NameValuePair param : urlParameters) {
+            if (param.getName().equals("client_id")) {
+                clientId = param.getValue();
+                break;
+            }
+        }
+        String clientAppId = clientDao.getClientByClientId(clientId).getId().toString();
 
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode rootNode = mapper.readTree(result.toString());
+
+        String accessToken = rootNode.path("access_token").asText();
+        String scope = rootNode.path("scope").asText();
+         int expiresIn = rootNode.path("expires_in").asInt();
+         String tokenType = rootNode.path("token_type").asText();
+
+        JsonObject responseObject = new JsonObject();
+        responseObject.addProperty("access_token", accessToken);
+        responseObject.addProperty("scope", scope);
+        responseObject.addProperty("expires_in", expiresIn);
+        responseObject.addProperty("token_type", tokenType);
+        responseObject.addProperty("client_app_id", clientAppId);
+        responseObject.addProperty("role", "clientApp");
+        return responseObject.toString();
+
+    }
+
+    @Override
+    public void deleteClient(String clientId) {
+        Keycloak keycloak = getInstance();
+        try {
+            ClientResponseDTO clientResponseDTO = clientMapper.toResponseDto(clientDao.getClientByClientId(clientId));
+            RealmResource realmResource = keycloak.realm(REALM);
+            ClientResource clientResource = realmResource.clients().get(clientResponseDTO.getClientKeycloakId());
+            if (clientResource != null) {
+                clientResource.remove();
+                clientDao.deleteClient(clientMapper.toResponseEntity(clientResponseDTO));
+                System.out.println("Client " + clientId + " deleted successfully.");
+            } else {
+                System.out.println("Client " + clientId + " not found.");
+            }
+        } catch (Exception e) {
+            System.err.println("Failed to delete client " + clientId + ": " + e.getMessage());
+        }
+    }
+
+    @Override
+    public void updateClient(ClientAppDTO clientAppDTO) {
+        Keycloak keycloak = getInstance();
+        try {
+            ClientResponseDTO clientResponseDTO = clientMapper.toResponseDto(clientDao.getClientByClientKeycloakId(clientAppDTO.getClientKeycloakId()));
+            RealmResource realmResource = keycloak.realm(REALM);
+            ClientResource clientResource = realmResource.clients().get(clientAppDTO.getClientKeycloakId());
+            ClientRepresentation client = new ClientRepresentation();
+            client.setClientId(clientAppDTO.getClientId());
+            client.setName(clientAppDTO.getName());
+            client.setEnabled(clientAppDTO.isEnabled());
+            client.setServiceAccountsEnabled(true);
+            client.setId(clientResponseDTO.getClientKeycloakId());
+            if (clientResource != null) {
+                clientResource.update(client);
+                clientDao.deleteClient(clientMapper.toResponseEntity(clientResponseDTO));
+                System.out.println("Client " + clientAppDTO.getClientId() + " updated successfully.");
+            } else {
+                System.out.println("Client " + clientAppDTO.getClientId() + " not found.");
+            }
+        } catch (Exception e) {
+            System.err.println("Failed to update client " + clientAppDTO.getClientId() + ": " + e.getMessage());
+        }
     }
 }
