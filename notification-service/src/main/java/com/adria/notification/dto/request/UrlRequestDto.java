@@ -11,4 +11,5 @@ import org.springframework.stereotype.Component;
 @NoArgsConstructor
 public class UrlRequestDto {
     private String url;
+    private String clientAppId;
 }
