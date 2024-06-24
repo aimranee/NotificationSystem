@@ -15,4 +15,5 @@ public class EventSimpleResponseDto {
     private boolean editable;
     private String description;
     private String notificationType;
+    private String clientAppId;
 }

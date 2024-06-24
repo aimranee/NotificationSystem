@@ -1,5 +1,6 @@
 package com.adria.notification.models.entities;
 
+import com.adria.notification.dto.response.ClientResponseDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,6 +8,8 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Type;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 
 @Entity
 @AllArgsConstructor
@@ -36,5 +39,9 @@ public class EmailProvider extends AbstractEntity {
     private boolean starttlsEnable;
     @Column(nullable = false)
     private String sslTrust;
+    private String clientAppId;
+    @Transient
+    @ManyToOne
+    private ClientResponseDTO clientApp;
 
 }

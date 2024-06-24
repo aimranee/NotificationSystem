@@ -15,4 +15,5 @@ public class EventRequestDto {
     private boolean editable;
     private String notificationType;
     private List<VariablesRequestDto> variables;
+    private String clientAppId;
 }

@@ -37,7 +37,7 @@ public class EmailSenderUtils {
             messageHelper.setSubject(templateDto.getSubject());
 
             Map<String, Object> templateVariables = setVariablesOnEmailTemplate(requestVariables);
-            String processedHtmlContent = processTemplate(templateDto.getEmailRenderedHtml(), templateVariables);
+            String processedHtmlContent = processTemplate(templateDto.getEmailRenderedHtml(), templateVariables, templateDto.getClientAppId());
             messageHelper.setText(processedHtmlContent, true);
 
             javaMailSender.send(mimeMessage);
@@ -61,7 +61,7 @@ public class EmailSenderUtils {
             messageHelper.setSubject(templateDto.getSubject());
 
             Map<String, Object> templateVariables = setVariablesOnEmailTemplate(requestVariables);
-            String processedHtmlContent = processTemplate(templateDto.getEmailRenderedHtml(), templateVariables);
+            String processedHtmlContent = processTemplate(templateDto.getEmailRenderedHtml(), templateVariables, templateDto.getClientAppId());
             messageHelper.setText(processedHtmlContent, true);
 
             for (MultipartFile file : files) {
@@ -88,7 +88,7 @@ public class EmailSenderUtils {
         return templateVariables;
     }
 
-    private String processTemplate(String htmlContent, Map<String, Object> variables) {
+    private String processTemplate(String htmlContent, Map<String, Object> variables, String clientAppId) {
         String processedContent = htmlContent;
         String gatewayUrl = "http://localhost:8888/urlshortening-service/";
         for (Map.Entry<String, Object> entry : variables.entrySet()) {
@@ -96,7 +96,7 @@ public class EmailSenderUtils {
             Object variableValue = entry.getValue();
             String placeholder = "\\[\\[\\$\\{" + variableName + "\\}\\]\\]";
             if (ValidationUtils.isLink(variableValue.toString())) {
-                UrlRequestDto urlRequestDto = new UrlRequestDto(variableValue.toString());
+                UrlRequestDto urlRequestDto = new UrlRequestDto(variableValue.toString(), clientAppId);
                 UrlResponseDto urlResponseDto = urlService.generateShortLink(urlRequestDto).getBody();
                 String fullLink = gatewayUrl + urlResponseDto.getShortLink();
                 String anchorTag = "<a href=\"" + fullLink + "\">" + fullLink + "</a>";

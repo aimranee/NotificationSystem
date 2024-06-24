@@ -13,4 +13,6 @@ public interface IEmailProviderDao {
     EmailProvider saveEmailProvider(EmailProvider emailProvider);
 
     List<EmailProvider> getAllEmailProvider();
+
+    boolean existsByName(String name);
 }

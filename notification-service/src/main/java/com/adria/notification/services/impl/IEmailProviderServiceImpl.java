@@ -37,4 +37,9 @@ public class IEmailProviderServiceImpl implements IEmailProviderService {
     public EmailProviderResponseDto getEmailProviderByName(String name) {
         return emailProviderMapper.toDto(emailProviderDao.getEmailProviderByName(name));
     }
+
+    @Override
+    public boolean existsByName(String name) {
+        return emailProviderDao.existsByName(name);
+    }
 }

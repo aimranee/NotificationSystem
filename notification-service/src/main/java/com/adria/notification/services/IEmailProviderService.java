@@ -11,4 +11,5 @@ public interface IEmailProviderService {
     EmailProviderResponseDto saveEmailProvider(SaveEmailProviderRequestDTO saveEmailProviderRequestDTO);
     EmailProviderResponseDto updateEmailProvider(UpdateEmailProviderRequestDTO updateEmailProviderDTO);
     EmailProviderResponseDto getEmailProviderByName(String name);
+    boolean existsByName(String name);
 }

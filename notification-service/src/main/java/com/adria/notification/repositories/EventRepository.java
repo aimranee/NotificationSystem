@@ -14,7 +14,9 @@ import java.util.UUID;
 public interface EventRepository extends JpaRepository<Event, UUID>{
     Optional<Event> findById(UUID id);
     boolean existsById(UUID id);
-    List<Event> findAllByNotificationType(String type);
+    List<Event> findAllByNotificationTypeAndClientAppId(String type, String clientAppId);
+
+    Event findByEventNameAndClientAppId(String eventName, String clientAppId);
     Event findByEventName(String event);
 
     @Modifying

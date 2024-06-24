@@ -54,9 +54,9 @@ public class EventController {
 //        templateService.deleteSms(smsTemplate);
 //    }
 
-    @GetMapping("/findAllEmail")
-    public ResponseEntity<List<EmailTemplateResponseDto>> findAllEmail(){
-        return ResponseEntity.ok().body(templateService.findAllEmail("email"));
+    @GetMapping("/findAllEmail/{appId}")
+    public ResponseEntity<List<EmailTemplateResponseDto>> findAllEmail(@PathVariable String appId){
+        return ResponseEntity.ok().body(templateService.findAllEmail("email", appId));
     }
 
     @GetMapping("/findAllEventNames")

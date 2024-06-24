@@ -1,4 +1,4 @@
-package com.adria.notification.dto.response;
+package com.adria.keycloakManagement.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

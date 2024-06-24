@@ -12,4 +12,5 @@ public class EventSimpleRequestDto {
     private boolean editable;
     private String description;
     private String notificationType;
+    private String clientAppId;
 }

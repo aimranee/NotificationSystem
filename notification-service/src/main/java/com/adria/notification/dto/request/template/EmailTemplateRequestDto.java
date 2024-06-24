@@ -22,4 +22,5 @@ public class EmailTemplateRequestDto {
     private String variables;
     @Valid
     private EmailProviderResponseDto emailProvider;
+    private String clientAppId;
 }

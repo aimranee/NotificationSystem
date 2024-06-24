@@ -20,4 +20,5 @@ public class EmailTemplateResponseDto {
     private String eventName;
     private String emailProviderName;
     private String variables;
+    private String clientAppId;
 }

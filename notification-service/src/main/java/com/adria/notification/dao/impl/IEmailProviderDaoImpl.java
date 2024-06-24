@@ -33,4 +33,9 @@ public class IEmailProviderDaoImpl implements IEmailProviderDao {
     public List<EmailProvider> getAllEmailProvider() {
         return emailProviderRepository.findAll();
     }
+
+    @Override
+    public boolean existsByName(String name) {
+        return emailProviderRepository.existsByName(name);
+    }
 }

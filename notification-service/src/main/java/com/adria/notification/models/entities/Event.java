@@ -1,5 +1,6 @@
 package com.adria.notification.models.entities;
 
+import com.adria.notification.dto.response.ClientResponseDTO;
 import lombok.*;
 import org.hibernate.annotations.Type;
 
@@ -30,5 +31,9 @@ public class Event extends AbstractEntity {
     private String emailRenderedHtml;
     @ManyToOne
     private EmailProvider emailProvider;
+    private String clientAppId;
+    @Transient
+    @ManyToOne
+    private ClientResponseDTO clientApp;
 
 }
