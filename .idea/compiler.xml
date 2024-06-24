@@ -10,7 +10,7 @@
         <module name="serverDiscovery" />
         <module name="gateway-service" />
       </profile>
-      <profile name="Annotation profile for urlshortening-service" enabled="true">
+      <profile name="Annotation profile for configuration-service" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
@@ -20,17 +20,22 @@
           <entry name="$MAVEN_REPOSITORY$/org/mapstruct/mapstruct-processor/1.5.5.Final/mapstruct-processor-1.5.5.Final.jar" />
           <entry name="$MAVEN_REPOSITORY$/org/mapstruct/mapstruct/1.5.5.Final/mapstruct-1.5.5.Final.jar" />
         </processorPath>
-        <module name="configuration-service" />
         <module name="urlshortening-service" />
         <module name="notification-service" />
+        <module name="keycloak-management-service" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="notification-service (1)" target="1.8" />
+      <module name="urlshortening-service (1)" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="configuration-service" options="-parameters" />
       <module name="gateway-service" options="-parameters" />
+      <module name="keycloak-management-service" options="-parameters" />
       <module name="notification-service" options="-parameters" />
+      <module name="notification-service (1)" options="-parameters" />
       <module name="urlshortening-service" options="-parameters" />
     </option>
   </component>
