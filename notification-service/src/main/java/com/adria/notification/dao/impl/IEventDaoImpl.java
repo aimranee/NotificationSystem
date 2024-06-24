@@ -52,8 +52,8 @@ public class IEventDaoImpl implements IEventDao {
     }
 
     @Override
-    public List<Event> findAllByNotificationType(String type) {
-        return eventRepository.findAllByNotificationType(type);
+    public List<Event> findAllByNotificationType(String type, String appId) {
+        return eventRepository.findAllByNotificationTypeAndClientAppId(type, appId);
     }
 
 //    @Override
@@ -62,10 +62,14 @@ public class IEventDaoImpl implements IEventDao {
 //    }
 
 
-
     @Override
     public void deleteEmail(EmailTemplateResponseDto emailTemplate) {
         eventRepository.delete(eventMapper.toEmailTemplateEntity(emailTemplate));
+    }
+
+    @Override
+    public Event findByEventNameAndAppId(String event, String appId) {
+        return eventRepository.findByEventNameAndClientAppId(event, appId);
     }
 
     @Override

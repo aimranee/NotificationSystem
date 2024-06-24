@@ -33,7 +33,7 @@ public class NotificationFactory {
     public ResponseEntity<NotificationResponseDto> pushNotification(List<MultipartFile> files, NotificationRequestDto requestDto) {
         INotificationService notificationService;
         for (EventRequestDto eventRequestDto : requestDto.getEvent()){
-            EventResponseDto eventDto = eventService.findByEventNameOnly(eventRequestDto.getEventName());
+            EventResponseDto eventDto = eventService.findByEventNameOnlyAndAppId(eventRequestDto.getEventName(), requestDto.getClientAppId());
             notificationService = getNotificationService(eventDto.getNotificationType());
             if (files == null || files.isEmpty()) {
                 return notificationService.sendNotification(requestDto);

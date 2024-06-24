@@ -19,4 +19,5 @@ public class NotificationDetailDto {
     private RecipientRequestDto recipientDto;
     @NotBlank(message = "The 'notification Type' field must not be empty")
     private String notificationType;
+    private String clientAppId;
 }

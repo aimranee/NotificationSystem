@@ -25,4 +25,5 @@ public class UpdateEmailTemplateRequestDto {
     private String variables;
     @Valid
     private EmailProviderResponseDto emailProvider;
+    private String clientAppId;
 }

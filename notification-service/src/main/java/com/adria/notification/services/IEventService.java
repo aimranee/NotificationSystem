@@ -21,14 +21,15 @@ public interface IEventService {
     void deleteEmail(EmailTemplateResponseDto emailTemplate);
 
     //    void deleteSms(SmsTemplateResponseDto smsTemplate);
-    List<EmailTemplateResponseDto> findAllEmail(String type);
+    List<EmailTemplateResponseDto> findAllEmail(String type, String appId);
 
     List<EventSimpleResponseDto> findAllEventNames();
 
     //    List<SmsTemplateResponseDto> findAllSms(String type);
+    EmailTemplateRequestDto findByEventNameAndAppId(String event, String appId);
     EmailTemplateRequestDto findByEventName(String event);
 
-    EventResponseDto findByEventNameOnly(String event);
+    EventResponseDto findByEventNameOnlyAndAppId(String event, String appId);
 
     EventResponseDto updateEditable(UUID id, boolean editable);
 

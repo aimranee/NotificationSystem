@@ -1,4 +1,4 @@
-package com.adria.notification.dto.request.emailProvider;
+package com.adria.keycloakManagement.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -29,5 +29,6 @@ public class UpdateEmailProviderRequestDTO {
     private boolean smtpAuth;
     private boolean starttlsEnable;
     private String sslTrust;
+    private String clientAppId;
 
 }

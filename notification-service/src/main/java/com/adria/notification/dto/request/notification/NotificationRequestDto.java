@@ -18,4 +18,5 @@ public class NotificationRequestDto {
     @NotBlank(message = "Phone recipient must not be blank")
     @Pattern(regexp = "\\+?[0-9]+", message = "Invalid phone number format")
     private String phoneRecipient;
+    private String clientAppId;
 }

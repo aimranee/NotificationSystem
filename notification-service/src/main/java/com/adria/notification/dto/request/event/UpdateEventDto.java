@@ -12,4 +12,5 @@ import java.util.UUID;
 public class UpdateEventDto {
     private UUID id;
     private boolean editable;
+    private String clientAppId;
 }

@@ -55,8 +55,8 @@ public class IEventServiceImpl implements IEventService {
 //    }
 
     @Override
-    public List<EmailTemplateResponseDto> findAllEmail(String type) {
-        return eventMapper.toEmailTemplateDtoList(eventDao.findAllByNotificationType(type));
+    public List<EmailTemplateResponseDto> findAllEmail(String type, String appId) {
+        return eventMapper.toEmailTemplateDtoList(eventDao.findAllByNotificationType(type, appId));
     }
 
     @Override
@@ -65,21 +65,26 @@ public class IEventServiceImpl implements IEventService {
     }
 
     @Override
+    public EmailTemplateRequestDto findByEventNameAndAppId(String event, String appId) {
+        return eventMapper.toEmailTemplateDto(eventDao.findByEventNameAndAppId(event, appId));
+    }
+
+    @Override
     public EmailTemplateRequestDto findByEventName(String event) {
         return eventMapper.toEmailTemplateDto(eventDao.findByEventName(event));
     }
 
     @Override
-    public EventResponseDto findByEventNameOnly(String event) {
-        return eventMapper.toEventResponseDto(eventDao.findByEventName(event));
+    public EventResponseDto findByEventNameOnlyAndAppId(String event, String appId) {
+        return eventMapper.toEventResponseDto(eventDao.findByEventNameAndAppId(event, appId));
     }
 
     @Override
     public EventResponseDto updateEditable(UUID id, boolean editable) {
         int res = eventDao.updateEditable(id, editable);
-        if (res==1){
+        if (res == 1) {
             return eventMapper.toEventResponseDto(eventDao.findById(id));
-        }else{
+        } else {
             return null;
         }
     }
