@@ -34,21 +34,6 @@ spring:
         jwt:
           issuer-uri: http://localhost:8090/realms/master
 
-  datasource:
-    url: jdbc:postgresql://localhost:5432/notificationSystem
-    username: postgres
-    password: root
-    driver-class-name: org.postgresql.Driver
-
-  jpa:
-    show-sql: true
-    hibernate:
-      ddl-auto: update
-    open-in-view: true
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
-
 logging:
   level:
     org.springframework.cloud.gateway: TRACE
@@ -58,11 +43,6 @@ logging:
 
 server:
   port: 8888
-
-keycloak:
-  serverUrl: http://localhost:8090
-  clientId: admin-cli
-  realm: master
 
 app:
   api:
